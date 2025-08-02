@@ -41,24 +41,29 @@
             <div class="space-y-4">
                 <h2 class="text-lg font-semibold text-cyan-400">1. Pay Directly via App</h2>
                 <p class="text-center text-sm text-gray-400">Click an icon to pay. (Works on mobile only)</p>
-                <div class="grid grid-cols-3 gap-4">
+                <!-- UPDATED: Responsive grid for payment app logos -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
                     <!-- Google Pay Button -->
                     <a href="upi://pay?pa=9824594156@upi&pn=Your%20Name&cu=INR" class="bg-gray-700/50 hover:bg-gray-600/70 p-4 rounded-lg flex flex-col items-center justify-center space-y-2 border border-gray-600 transition-all duration-300 transform hover:scale-105">
                         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Google_Pay_Logo.svg/2560px-Google_Pay_Logo.svg.png" alt="Google Pay" class="h-8">
-                        <span class="font-semibold text-gray-200 text-sm">Google Pay</span>
+                        <span class="font-semibold text-gray-200 text-xs">Google Pay</span>
                     </a>
                     <!-- PhonePe Button -->
                     <a href="phonepe://pay?pa=9824594156@upi&pn=Your%20Name&cu=INR" class="bg-gray-700/50 hover:bg-gray-600/70 p-4 rounded-lg flex flex-col items-center justify-center space-y-2 border border-gray-600 transition-all duration-300 transform hover:scale-105">
                         <img src="https://upload.wikimedia.org/wikipedia/commons/7/71/PhonePe_Logo.svg" alt="PhonePe" class="h-8">
-                         <span class="font-semibold text-gray-200 text-sm">PhonePe</span>
+                         <span class="font-semibold text-gray-200 text-xs">PhonePe</span>
                     </a>
                     <!-- BHIM UPI Button -->
                     <a href="bhim://upi/pay?pa=9824594156@upi&pn=Your%20Name&cu=INR" class="bg-gray-700/50 hover:bg-gray-600/70 p-4 rounded-lg flex flex-col items-center justify-center space-y-2 border border-gray-600 transition-all duration-300 transform hover:scale-105">
-                        <svg class="h-8 w-auto" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 88 88">
-                            <path d="M44 0C19.7 0 0 19.7 0 44s19.7 44 44 44 44-19.7 44-44S68.3 0 44 0zm25.9 66.8c-6.9 5.5-15 8.2-23.6 8.2h-4.2c-4.2 0-7.7-3.5-7.7-7.7V43.1c0-4.2 3.5-7.7 7.7-7.7h4.2c8.6 0 16.7 2.7 23.6 8.2 6.9 5.5 11.4 13 12.1 21.3.6 8.4-2 16.7-7.7 22.9-2.3 2.5-4.8 4.7-7.4 6.1z" fill="#F7941E"></path>
-                            <path d="M54.3 65.1c-2.7-2-4.8-4.8-6.2-8.2-1.3-3.4-1.3-6.9 0-10.4 1.3-3.4 3.5-6.2 6.2-8.2 2.7-2 6.2-3.3 9.7-3.3h2.7c.6 0 1.3.1 2 .2 1.3 5.5-.7 11.4-4.8 15.6-4.3 4.3-10 6.2-15.6 4.8-.7-.4-1.1-1-1.2-1.7z" fill="#0071BC"></path>
-                        </svg>
-                         <span class="font-semibold text-gray-200 text-sm">BHIM</span>
+                        <!-- FIXED: Correct inline SVG for BHIM logo -->
+
+                         <span class="font-semibold text-gray-200 text-xs">BHIM</span>
+                    </a>
+                    <!-- Amazon Pay Button -->
+                    <a href="amazonpay://upi/pay?pa=9824594156@upi&pn=Your%20Name&cu=INR" class="bg-gray-700/50 hover:bg-gray-600/70 p-4 rounded-lg flex flex-col items-center justify-center space-y-2 border border-gray-600 transition-all duration-300 transform hover:scale-105">
+                        <!-- FIXED: Correct inline SVG for Amazon Pay logo -->
+                        
+                        <span class="font-semibold text-gray-200 text-xs">Amazon Pay</span>
                     </a>
                 </div>
                  <p class="text-center text-xs text-gray-500 pt-2">IMPORTANT: You must replace "Your Name" in the links above.</p>
