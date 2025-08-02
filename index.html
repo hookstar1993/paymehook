@@ -102,7 +102,7 @@
             <div class="space-y-4">
                 <h2 class="text-lg font-semibold text-cyan-300 text-high-contrast">1. Pay Directly via App</h2>
                 <p class="text-center text-sm text-gray-300 text-high-contrast">Click an icon to pay. (Works on mobile only)</p>
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <div class="grid grid-cols-2 gap-4">
                     <!-- Google Pay Button -->
                     <a href="upi://pay?pa=9824594156@upi&pn=Your%20Name&cu=INR" class="glass-panel hover:bg-white/10 p-4 rounded-lg flex flex-col items-center justify-center space-y-2 transition-all duration-300 transform hover:scale-105">
                         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Google_Pay_Logo.svg/2560px-Google_Pay_Logo.svg.png" alt="Google Pay" class="h-8">
@@ -112,16 +112,6 @@
                     <a href="phonepe://pay?pa=9824594156@upi&pn=Your%20Name&cu=INR" class="glass-panel hover:bg-white/10 p-4 rounded-lg flex flex-col items-center justify-center space-y-2 transition-all duration-300 transform hover:scale-105">
                         <img src="https://upload.wikimedia.org/wikipedia/commons/7/71/PhonePe_Logo.svg" alt="PhonePe" class="h-8">
                          <span class="font-semibold text-gray-200 text-xs text-high-contrast">PhonePe</span>
-                    </a>
-                    <!-- BHIM UPI Button -->
-                    <a href="bhim://upi/pay?pa=9824594156@upi&pn=Your%20Name&cu=INR" class="glass-panel hover:bg-white/10 p-4 rounded-lg flex flex-col items-center justify-center space-y-2 transition-all duration-300 transform hover:scale-105">
-                    
-                    <span class="font-semibold text-gray-200 text-xs text-high-contrast">BHIM</span>
-                    </a>
-                    <!-- Amazon Pay Button -->
-                    <a href="amazonpay://upi/pay?pa=9824594156@upi&pn=Your%20Name&cu=INR" class="glass-panel hover:bg-white/10 p-4 rounded-lg flex flex-col items-center justify-center space-y-2 transition-all duration-300 transform hover:scale-105">
-                        
-                        <span class="font-semibold text-gray-200 text-xs text-high-contrast">Amazon Pay</span>
                     </a>
                 </div>
             </div>
@@ -164,7 +154,6 @@
                             </button>
                         </div>
                     </div>
-                    <!-- ADDED: Bank Name -->
                     <div class="flex justify-between items-center">
                         <span class="text-gray-200 text-high-contrast">Bank Name:</span>
                         <div class="flex items-center space-x-3">
