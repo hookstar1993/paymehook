@@ -1,1 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Your Payment</title>
+    
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Applying the Inter font to the whole page */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom styles for a subtle glow effect on focus */
+        .glow-on-focus:focus-within {
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
 
+    <!-- Main container -->
+    <div class="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-gray-900 via-gray-900 to-slate-800">
+        
+        <div class="w-full max-w-md bg-gray-800/60 backdrop-blur-xl rounded-2xl shadow-2xl p-8 space-y-8 border border-gray-700">
+            
+            <!-- Header section -->
+            <div class="text-center">
+                <h1 class="text-3xl font-bold text-white tracking-tight">Make a Secure Payment</h1>
+                <p class="text-gray-400 mt-2">Choose your preferred payment method below.</p>
+            </div>
+
+            <!-- Direct App Payments -->
+            <div class="space-y-4">
+                <h2 class="text-lg font-semibold text-cyan-400">1. Pay Directly via App</h2>
+                <p class="text-center text-sm text-gray-400">Click an icon to pay. (Works on mobile only)</p>
+                <div class="grid grid-cols-3 gap-4">
+                    <!-- Google Pay Button -->
+                    <a href="upi://pay?pa=9824594156@upi&pn=Your%20Name&cu=INR" class="bg-gray-700/50 hover:bg-gray-600/70 p-4 rounded-lg flex flex-col items-center justify-center space-y-2 border border-gray-600 transition-all duration-300 transform hover:scale-105">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Google_Pay_Logo.svg/2560px-Google_Pay_Logo.svg.png" alt="Google Pay" class="h-8">
+                        <span class="font-semibold text-gray-200 text-sm">Google Pay</span>
+                    </a>
+                    <!-- PhonePe Button -->
+                    <a href="phonepe://pay?pa=9824594156@upi&pn=Your%20Name&cu=INR" class="bg-gray-700/50 hover:bg-gray-600/70 p-4 rounded-lg flex flex-col items-center justify-center space-y-2 border border-gray-600 transition-all duration-300 transform hover:scale-105">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/7/71/PhonePe_Logo.svg" alt="PhonePe" class="h-8">
+                         <span class="font-semibold text-gray-200 text-sm">PhonePe</span>
+                    </a>
+                    <!-- BHIM UPI Button -->
+                    <a href="bhim://upi/pay?pa=9824594156@upi&pn=Your%20Name&cu=INR" class="bg-gray-700/50 hover:bg-gray-600/70 p-4 rounded-lg flex flex-col items-center justify-center space-y-2 border border-gray-600 transition-all duration-300 transform hover:scale-105">
+                        <svg class="h-8 w-auto" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 88 88">
+                            <path d="M44 0C19.7 0 0 19.7 0 44s19.7 44 44 44 44-19.7 44-44S68.3 0 44 0zm25.9 66.8c-6.9 5.5-15 8.2-23.6 8.2h-4.2c-4.2 0-7.7-3.5-7.7-7.7V43.1c0-4.2 3.5-7.7 7.7-7.7h4.2c8.6 0 16.7 2.7 23.6 8.2 6.9 5.5 11.4 13 12.1 21.3.6 8.4-2 16.7-7.7 22.9-2.3 2.5-4.8 4.7-7.4 6.1z" fill="#F7941E"></path>
+                            <path d="M54.3 65.1c-2.7-2-4.8-4.8-6.2-8.2-1.3-3.4-1.3-6.9 0-10.4 1.3-3.4 3.5-6.2 6.2-8.2 2.7-2 6.2-3.3 9.7-3.3h2.7c.6 0 1.3.1 2 .2 1.3 5.5-.7 11.4-4.8 15.6-4.3 4.3-10 6.2-15.6 4.8-.7-.4-1.1-1-1.2-1.7z" fill="#0071BC"></path>
+                        </svg>
+                         <span class="font-semibold text-gray-200 text-sm">BHIM</span>
+                    </a>
+                </div>
+                 <p class="text-center text-xs text-gray-500 pt-2">IMPORTANT: You must replace "Your Name" in the links above.</p>
+            </div>
+
+            <!-- Divider -->
+            <div class="relative">
+                <div class="absolute inset-0 flex items-center" aria-hidden="true">
+                    <div class="w-full border-t border-gray-600"></div>
+                </div>
+                <div class="relative flex justify-center">
+                    <span class="bg-gray-800 px-2 text-sm text-gray-400">OR</span>
+                </div>
+            </div>
+
+            <!-- Payment Method 2: QR Code -->
+            <div class="space-y-4">
+                <h2 class="text-lg font-semibold text-cyan-400">2. Scan & Pay</h2>
+                <div class="bg-white p-4 rounded-lg flex justify-center">
+                    <!-- IMPORTANT: Replace this placeholder with your actual QR code image URL -->
+                    <img 
+                        src="https://hookstar1993.github.io/paymehook/qr-9824594156@okbizaxis.png" 
+                        alt="QR Code for Payment" 
+                        class="rounded-md"
+                        onerror="this.onerror=null;this.src='https://placehold.co/250x250/ff0000/ffffff?text=Image+Error';"
+                    >
+                </div>
+                <p class="text-center text-sm text-gray-400">Use any UPI app to scan.</p>
+            </div>
+
+            <!-- Payment Method 3: UPI ID -->
+            <div class="space-y-4">
+                <h2 class="text-lg font-semibold text-cyan-400">3. Pay with UPI ID</h2>
+                <div class="flex items-center justify-between bg-gray-700/50 p-4 rounded-lg border border-gray-600 glow-on-focus transition-shadow duration-300">
+                    <span id="upiId" class="text-lg font-mono text-gray-200">9824594156@upi</span>
+                    <button onclick="copyToClipboard('upiId', this)" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg flex items-center space-x-2 transition-all duration-300 transform hover:scale-105">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M7 9a2 2 0 012-2h6a2 2 0 012 2v6a2 2 0 01-2 2H9a2 2 0 01-2-2V9z" />
+                            <path d="M5 3a2 2 0 00-2 2v6a2 2 0 002 2V5h6a2 2 0 00-2-2H5z" />
+                        </svg>
+                        <span class="copy-text">Copy</span>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Payment Method 4: Bank Transfer -->
+            <div class="space-y-4">
+                <h2 class="text-lg font-semibold text-cyan-400">4. Direct Bank Transfer</h2>
+                <div class="bg-gray-700/50 p-4 rounded-lg space-y-4 border border-gray-600">
+                    <!-- Bank Detail: Account Name -->
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-400">Account Name:</span>
+                        <div class="flex items-center space-x-3">
+                            <span id="accName" class="font-medium text-gray-200">SAVANI HARDEEP MANSUKHBHAI</span>
+                            <button onclick="copyToClipboard('accName', this)" title="Copy Account Name" class="p-1.5 rounded-lg transition-all duration-200 bg-gray-600 hover:bg-gray-500">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" viewBox="0 0 20 20" fill="currentColor"><path d="M7 9a2 2 0 012-2h6a2 2 0 012 2v6a2 2 0 01-2 2H9a2 2 0 01-2-2V9z" /><path d="M5 3a2 2 0 00-2 2v6a2 2 0 002 2V5h6a2 2 0 00-2-2H5z" /></svg>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Bank Detail: Bank Name -->
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-400">Bank Name:</span>
+                        <div class="flex items-center space-x-3">
+                            <span id="bankName" class="font-medium text-gray-200">STATE BANK OF INDIA</span>
+                            <button onclick="copyToClipboard('bankName', this)" title="Copy Bank Name" class="p-1.5 rounded-lg transition-all duration-200 bg-gray-600 hover:bg-gray-500">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" viewBox="0 0 20 20" fill="currentColor"><path d="M7 9a2 2 0 012-2h6a2 2 0 012 2v6a2 2 0 01-2 2H9a2 2 0 01-2-2V9z" /><path d="M5 3a2 2 0 00-2 2v6a2 2 0 002 2V5h6a2 2 0 00-2-2H5z" /></svg>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Bank Detail: Account Number -->
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-400">Account Number:</span>
+                        <div class="flex items-center space-x-3">
+                            <span id="accNum" class="font-medium text-gray-200">40003791171</span>
+                            <button onclick="copyToClipboard('accNum', this)" title="Copy Account Number" class="p-1.5 rounded-lg transition-all duration-200 bg-gray-600 hover:bg-gray-500">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" viewBox="0 0 20 20" fill="currentColor"><path d="M7 9a2 2 0 012-2h6a2 2 0 012 2v6a2 2 0 01-2 2H9a2 2 0 01-2-2V9z" /><path d="M5 3a2 2 0 00-2 2v6a2 2 0 002 2V5h6a2 2 0 00-2-2H5z" /></svg>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Bank Detail: IFSC Code -->
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-400">IFSC Code:</span>
+                        <div class="flex items-center space-x-3">
+                            <span id="ifscCode" class="font-medium text-gray-200">SBIN0060236</span>
+                            <button onclick="copyToClipboard('ifscCode', this)" title="Copy IFSC Code" class="p-1.5 rounded-lg transition-all duration-200 bg-gray-600 hover:bg-gray-500">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" viewBox="0 0 20 20" fill="currentColor"><path d="M7 9a2 2 0 012-2h6a2 2 0 012 2v6a2 2 0 01-2 2H9a2 2 0 01-2-2V9z" /><path d="M5 3a2 2 0 00-2 2v6a2 2 0 002 2V5h6a2 2 0 00-2-2H5z" /></svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- WhatsApp Confirmation Section -->
+            <div class="space-y-4 pt-4">
+                <h2 class="text-lg font-semibold text-green-400">5. Confirm on WhatsApp</h2>
+                <p class="text-sm text-gray-400 text-center">After payment, click the button below to send us the screenshot for confirmation.</p>
+                <a 
+                    href="https://wa.me/919824594156?text=Hello!%20I%20have%20completed%20the%20payment.%20Here%20is%20the%20screenshot."
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg flex items-center justify-center space-x-3 transition-all duration-300 transform hover:scale-105"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.894 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01s-.521.074-.792.372c-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.626.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+                    <span>Send Screenshot on WhatsApp</span>
+                </a>
+            </div>
+
+            <!-- Footer -->
+            <div class="text-center pt-4">
+                <p class="text-sm text-gray-500">Thank you for your payment!</p>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Notification element for copy feedback -->
+    <div id="notification" class="fixed bottom-5 right-5 bg-green-500 text-white py-2 px-4 rounded-lg shadow-lg transform translate-y-20 opacity-0 transition-all duration-300">
+        Copied to clipboard!
+    </div>
+
+    <script>
+        // --- JavaScript for Copy to Clipboard Functionality ---
+
+        /**
+         * Shows a temporary notification message.
+         */
+        function showNotification() {
+            const notification = document.getElementById('notification');
+            notification.classList.remove('translate-y-20', 'opacity-0');
+            notification.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                notification.classList.add('translate-y-20', 'opacity-0');
+                notification.classList.remove('translate-y-0', 'opacity-100');
+            }, 2000); // Hide after 2 seconds
+        }
+
+        /**
+         * Copies the text content of a given element ID to the clipboard.
+         * @param {string} elementId - The ID of the element whose text content will be copied.
+         * @param {HTMLElement} button - The button element that was clicked.
+         */
+        function copyToClipboard(elementId, button) {
+            const textToCopy = document.getElementById(elementId).innerText;
+            
+            const fallbackCopy = () => {
+                const textArea = document.createElement('textarea');
+                textArea.value = textToCopy;
+                textArea.style.position = 'fixed';
+                textArea.style.left = '-9999px';
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    showNotification();
+                    updateButtonState(button);
+                } catch (err) {
+                    console.error('Fallback: Oops, unable to copy', err);
+                }
+                document.body.removeChild(textArea);
+            };
+
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    showNotification();
+                    updateButtonState(button);
+                }).catch(err => {
+                    console.warn('Clipboard API failed, using fallback. Error:', err);
+                    fallbackCopy();
+                });
+            } else {
+                fallbackCopy();
+            }
+        }
+        
+        /**
+         * Provides visual feedback on the button after a copy action.
+         * Handles both text buttons and icon-only buttons.
+         * @param {HTMLElement} button - The button to update.
+         */
+        function updateButtonState(button) {
+            const copyTextSpan = button.querySelector('.copy-text');
+            const originalHTML = button.innerHTML; 
+
+            button.disabled = true;
+            button.classList.remove('bg-blue-600', 'hover:bg-blue-700', 'bg-gray-600', 'hover:bg-gray-500');
+            button.classList.add('bg-green-500');
+
+            if (copyTextSpan) {
+                // Handle buttons with text
+                copyTextSpan.innerText = 'Copied!';
+            } else {
+                // Handle icon-only buttons by changing the icon to a checkmark
+                button.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>`;
+            }
+
+            // Revert the button state after 2 seconds
+            setTimeout(() => {
+                button.innerHTML = originalHTML;
+                button.disabled = false;
+                
+                // Restore original colors based on whether it had text
+                if (copyTextSpan) {
+                     button.classList.add('bg-blue-600', 'hover:bg-blue-700');
+                } else {
+                    button.classList.add('bg-gray-600', 'hover:bg-gray-500');
+                }
+                button.classList.remove('bg-green-500');
+            }, 2000);
+        }
+    </script>
+
+</body>
+</html>
