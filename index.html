@@ -3,200 +3,325 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Complete Your Payment</title>
-    
-    <!-- Tailwind CSS for styling -->
+    <title>Jay Dwarkadhish - Poonam Schedule - Views Bookings</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Google Fonts: Inter (iOS-like font) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Teko:wght@400;600&family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
     <style>
-        /* Applying the Inter font to the whole page */
+        html {
+            scroll-behavior: smooth;
+        }
         body {
             font-family: 'Inter', sans-serif;
+            background-color: #0c0a1a;
+            color: #f0f0f0;
+            overflow-x: hidden;
         }
-
-        /* --- Glass OS Background --- */
-        .background-container {
+        h1,
+        h2.page-title,
+        #countdown-timer span {
+            font-family: 'Teko', sans-serif;
+            letter-spacing: 0.05em;
+        }
+        .aurora-background {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: #1a1a2e; /* Dark blue fallback */
-            overflow: hidden;
             z-index: -1;
+            background: radial-gradient(ellipse at 50% 0%, rgba(56, 189, 248, 0.2) 0%, transparent 70%),
+                        radial-gradient(ellipse at 10% 100%, rgba(168, 85, 247, 0.2) 0%, transparent 70%),
+                        radial-gradient(ellipse at 90% 100%, rgba(236, 72, 153, 0.2) 0%, transparent 70%);
+            animation: animate-aurora 15s linear infinite;
         }
-
-        .aurora-shape {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(100px);
-            opacity: 0.4;
+        @keyframes animate-aurora {
+            0% { transform: rotate(0deg) scale(1.5); opacity: 0.5; }
+            50% { transform: rotate(180deg) scale(2); opacity: 1; }
+            100% { transform: rotate(360deg) scale(1.5); opacity: 0.5; }
         }
-
-        .shape1 {
-            width: 500px;
-            height: 500px;
-            background: #4a00e0; /* Vibrant Purple */
-            top: -150px;
-            left: -150px;
-        }
-
-        .shape2 {
-            width: 400px;
-            height: 400px;
-            background: #8e2de2; /* Lighter Purple */
-            bottom: -100px;
-            right: -100px;
-        }
-        
-        .shape3 {
-            width: 300px;
-            height: 300px;
-            background: #00c6ff; /* Bright Blue */
-            bottom: 50%;
-            right: 30%;
-        }
-
-        /* --- Glass UI Elements --- */
-        .glass-panel {
-            background: rgba(30, 30, 42, 0.5); /* Darker glass for better contrast */
-            backdrop-filter: blur(20px);
+        .glass-effect {
+            background: rgba(12, 10, 26, 0.4);
             -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
         }
-        
+        .animated-glow-border {
+            position: relative;
+            overflow: hidden;
+        }
+        .animated-glow-border::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -150%;
+            width: 150%;
+            height: 100%;
+            background: linear-gradient(110deg, transparent 20%, rgba(192, 132, 252, 0.6) 50%, transparent 80%);
+            transform: skewX(-25deg);
+            animation: animate-glow 4s linear infinite;
+        }
+        @keyframes animate-glow {
+            from { left: -150%; }
+            to { left: 150%; }
+        }
+        #main-view,
+        #details-view {
+            transition: opacity 0.3s ease-in-out;
+        }
+        .view-hidden {
+            display: none;
+        }
+        .modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.3s ease;
+        }
+        .modal-content {
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .modal-content-ticket {
+            width: 90%;
+            height: 90%;
+            max-width: 1000px;
+        }
+        .modal-iframe {
+            width: 100%;
+            height: calc(100% - 60px);
+            border: none;
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+        .shake {
+            animation: shake 0.5s ease-in-out;
+        }
         .text-high-contrast {
             color: white;
             text-shadow: 0 1px 3px rgba(0,0,0,0.3);
         }
-        
+        /* Highlight for current timing */
+        .current-timing {
+            background-color: rgba(250, 204, 21, 0.15);
+            border-left: 4px solid #facc15; /* amber-400 */
+        }
     </style>
 </head>
-<body class="bg-gray-900">
+<body class="flex flex-col min-h-screen">
 
-    <!-- Animated Liquid Background -->
-    <div class="background-container">
-        <div class="aurora-shape shape1"></div>
-        <div class="aurora-shape shape2"></div>
-        <div class="aurora-shape shape3"></div>
+    <div class="aurora-background"></div>
+
+    <!-- Password Overlay -->
+    <div id="password-overlay" class="fixed inset-0 z-50 flex items-center justify-center p-4 glass-effect transition-opacity duration-500">
+        <div class="w-full max-w-sm text-center">
+            <div class="flex items-center justify-center text-3xl font-bold tracking-wider text-white mb-6" style="text-shadow: 0 0 8px rgba(255,255,255,0.5);">
+                <svg class="w-10 h-10 mr-3 text-amber-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 20h18" /><path d="M7 20L12 5l5 15" /><path d="M12 5V2l5 1.5L12 2" /><path d="M8 20v-3h8v3" />
+                </svg>
+                Jay Dwarkadhish
+            </div>
+            <p class="text-slate-300 mb-4">Please enter the password to continue</p>
+            <form id="password-form">
+                <input type="password" id="password-input" class="w-full px-4 py-3 bg-slate-800/50 border border-slate-600 rounded-lg text-white text-center text-lg tracking-widest focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all" placeholder="******">
+                <p id="error-message" class="text-red-400 h-6 mt-2 text-sm"></p>
+                <button type="submit" class="w-full mt-2 p-3 rounded-lg bg-gradient-to-r from-pink-500 to-purple-600 text-center font-semibold text-white transition-all duration-300 hover:shadow-xl transform hover:scale-105">Enter</button>
+            </form>
+        </div>
     </div>
 
-    <!-- Main container -->
-    <div class="min-h-screen flex items-center justify-center p-4">
-        
-        <div class="w-full max-w-md glass-panel rounded-2xl p-6 sm:p-8 space-y-8">
+    <!-- Welcome Popup -->
+    <div id="welcome-popup" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 transition-opacity duration-500 opacity-0 pointer-events-none">
+        <div class="glass-effect rounded-2xl p-8 text-center transform scale-95 transition-transform duration-500">
+             <h2 class="text-4xl sm:text-5xl font-bold text-amber-300 page-title" style="text-shadow: 0 0 15px rgba(251, 191, 36, 0.5);">|| Jay Dwarkadhish ||</h2>
+             <p class="text-slate-300 mt-2">Welcome to the sacred journey!</p>
+        </div>
+    </div>
+
+    <!-- Main Site Wrapper (Initially Hidden) -->
+    <div id="site-wrapper" class="opacity-0 transition-opacity duration-500">
+        <header class="glass-effect shadow-md sticky top-0 z-40">
+            <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+                <div class="flex items-center text-2xl font-bold tracking-wider text-white" style="text-shadow: 0 0 8px rgba(255,255,255,0.5);">
+                    <svg class="w-8 h-8 mr-2 text-amber-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 20h18" /><path d="M7 20L12 5l5 15" /><path d="M12 5V2l5 1.5L12 2" /><path d="M8 20v-3h8v3" />
+                    </svg>
+                    Jay Dwarkadhish
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#" id="home-link" class="text-gray-300 hover:text-white font-medium transition-colors duration-300">Home</a>
+                    <a href="#" id="timing-link" class="text-gray-300 hover:text-white font-medium transition-colors duration-300">Mandir Timing</a>
+                    <a href="#" id="about-link" class="text-gray-300 hover:text-white font-medium transition-colors duration-300">About Us</a>
+                    <a href="#" id="contact-link" class="text-gray-300 hover:text-white font-medium transition-colors duration-300">Contact</a>
+                    <a href="#" id="pay-link" class="bg-green-500/80 hover:bg-green-500/90 text-white font-bold py-2 px-4 rounded-lg transition-all duration-300 transform hover:scale-105">Pay Me Here</a>
+                </div>
+                <button class="md:hidden" id="mobile-menu-button">
+                     <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                </button>
+            </nav>
+            <div id="mobile-menu" class="hidden md:hidden px-6 pb-4 glass-effect">
+                <a href="#" id="mobile-home-link" class="block py-2 text-gray-300 hover:text-white">Home</a>
+                <a href="#" id="mobile-timing-link" class="block py-2 text-gray-300 hover:text-white">Mandir Timing</a>
+                <a href="#" id="mobile-about-link" class="block py-2 text-gray-300 hover:text-white">About Us</a>
+                <a href="#" id="mobile-contact-link" class="block py-2 text-gray-300 hover:text-white">Contact</a>
+                <a href="#" id="mobile-pay-link" class="block py-2 mt-2 text-center bg-green-500/80 hover:bg-green-500/90 text-white font-bold rounded-lg transition-all duration-300">Pay Me Here</a>
+            </div>
+        </header>
+
+        <div id="content-area" class="container mx-auto px-6 py-16 flex-grow">
+            <div id="main-view">
+                <div class="text-center mb-12">
+                    <h1 class="text-3xl md:text-4xl font-black text-white leading-tight" style="text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);">🌟 Our Spiritual Journey to Dwarka Begins!</h1>
+                    <p class="text-lg text-gray-400 mt-4 max-w-3xl mx-auto">Our journey on these all special Poonam days! So Stay updated with Dharamshala booking and travel details below.</p>
+                </div>
+                
+                <!-- Countdown Timer -->
+                <div id="countdown-container" class="mb-16">
+                    <!-- Timer will be injected here -->
+                </div>
+
+                <div id="poonam-dates-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+            </div>
+            <div id="details-view" class="view-hidden"></div>
+        </div>
+
+        <footer class="glass-effect mt-20">
+            <div class="container mx-auto px-6 py-8">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <p class="text-sm text-gray-400 mb-4 md:mb-0">© 2025 Jay Dwarkadhish. All Rights Reserved.</p>
+                    <div class="flex space-x-6">
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.04C6.5 2.04 2 6.53 2 12.06c0 4.71 3.21 8.65 7.53 9.79v-6.94H7.01v-2.85h2.52V9.82c0-2.5 1.52-3.88 3.78-3.88 1.08 0 2.02.08 2.29.12v2.54h-1.5c-1.21 0-1.45.58-1.45 1.42v1.86h2.83l-.37 2.85h-2.46v6.94C18.79 20.71 22 16.77 22 12.06c0-5.53-4.5-10.02-10-10.02z"/></svg></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M22.46 6c-.77.35-1.6.58-2.46.67.88-.53 1.56-1.37 1.88-2.38-.83.49-1.75.85-2.72 1.05C18.37 4.5 17.26 4 16 4c-2.35 0-4.27 1.92-4.27 4.29 0 .34.04.67.11.98-3.56-.18-6.72-1.88-8.84-4.48-.37.63-.58 1.37-.58 2.15 0 1.49.75 2.81 1.91 3.58-.7-.02-1.37-.22-1.95-.55v.05c0 2.08 1.48 3.82 3.44 4.21a4.22 4.22 0 0 1-1.94.07 4.28 4.28 0 0 0 4 2.98 8.521 8.521 0 0 1-5.33 1.84c-.34 0-.68-.02-1.02-.06C3.44 20.29 5.7 21 8.12 21c7.55 0 11.69-6.25 11.69-11.69v-.53c.8-.58 1.48-1.3 2.02-2.12z"/></svg></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8A3.6 3.6 0 0 0 7.6 20h8.8A3.6 3.6 0 0 0 20 16.4V7.6A3.6 3.6 0 0 0 16.4 4H7.6m9.65 1.5a1.25 1.25 0 1 1-2.5 0 1.25 1.25 0 0 1 2.5 0M12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10m0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/></svg></a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Ticket Viewer Modal -->
+    <div id="ticketModal" class="modal-backdrop hidden">
+        <div class="modal-content-ticket glass-effect p-2 sm:p-4 relative flex flex-col rounded-2xl">
+            <button id="closeModalBtn" class="absolute -top-2 -right-2 sm:-top-3 sm:-right-3 bg-red-600 text-white rounded-full h-8 w-8 flex items-center justify-center text-lg font-bold z-50 hover:bg-red-700 transition-all">&times;</button>
+            <iframe id="ticketViewerIframe" class="modal-iframe flex-grow rounded-t-lg" src="" title="Ticket Viewer"></iframe>
+            <div class="text-center p-2">
+                <a id="downloadBtn" href="#" download="ticket.pdf" class="w-full sm:w-auto inline-block animated-glow-border bg-green-500/10 text-green-300 border border-green-400/30 px-6 py-2 rounded-lg hover:bg-green-500/20 transition-all duration-300">Download</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- About Us Modal -->
+    <div id="about-modal" class="modal-backdrop hidden">
+        <div class="modal-content glass-effect p-6 sm:p-8 relative flex flex-col rounded-2xl">
+            <button id="close-about-modal" class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors text-3xl">&times;</button>
+            <h2 class="text-3xl font-bold text-purple-300 page-title mb-4">About Us</h2>
+            <div class="text-slate-300 overflow-y-auto pr-4">
+                <p>Here you can write about your group, the purpose of the journey, and any other details you want to share with your members.</p>
+                <p class="mt-4">This is a placeholder text. You can edit this section to add your own content.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Modal -->
+    <div id="contact-modal" class="modal-backdrop hidden">
+        <div class="modal-content glass-effect p-6 sm:p-8 relative flex flex-col rounded-2xl">
+            <button id="close-contact-modal" class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors text-3xl">&times;</button>
+            <h2 class="text-3xl font-bold text-sky-300 page-title mb-4">Contact & Suggestions</h2>
             
-            <!-- Header section -->
-            <div class="text-center">
+            <div class="text-slate-300 mb-6">
+                <p class="font-semibold text-lg">Hardeep Savani</p>
+                <p class="text-slate-400">Surat, Gujarat</p>
+            </div>
+
+            <div class="flex items-center justify-center space-x-6 mb-8">
+                <a href="https://wa.me/919824594156" target="_blank" class="flex items-center space-x-2 text-green-400 hover:text-green-300 transition-colors">
+                    <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.886-.001 2.269.654 4.542 1.916 6.448l-.29 2.021 2.094-.554z"/></svg>
+                    <span class="font-semibold">WhatsApp</span>
+                </a>
+                <a href="https://instagram.com/hookstar.fx" target="_blank" class="flex items-center space-x-2 text-pink-400 hover:text-pink-300 transition-colors">
+                     <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8A3.6 3.6 0 0 0 7.6 20h8.8A3.6 3.6 0 0 0 20 16.4V7.6A3.6 3.6 0 0 0 16.4 4H7.6m9.65 1.5a1.25 1.25 0 1 1-2.5 0 1.25 1.25 0 0 1 2.5 0M12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10m0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/></svg>
+                    <span class="font-semibold">Instagram</span>
+                </a>
+            </div>
+
+            <form id="contact-form" class="space-y-4">
+                <input type="text" id="contact-name" placeholder="Your Name" class="w-full px-4 py-2 bg-slate-800/50 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-sky-500" required>
+                <input type="email" id="contact-email" placeholder="Your Email" class="w-full px-4 py-2 bg-slate-800/50 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-sky-500" required>
+                <textarea id="contact-message" placeholder="Your Suggestion..." rows="4" class="w-full px-4 py-2 bg-slate-800/50 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-sky-500" required></textarea>
+                <button type="submit" class="w-full p-3 rounded-lg bg-gradient-to-r from-sky-500 to-indigo-500 text-center font-semibold text-white transition-all duration-300 hover:shadow-xl transform hover:scale-105">Send Suggestion</button>
+            </form>
+             <p id="form-success-message" class="text-green-400 h-6 mt-2 text-sm text-center"></p>
+        </div>
+    </div>
+
+    <!-- Payment Modal -->
+    <div id="payment-modal" class="modal-backdrop hidden">
+        <div class="modal-content glass-effect p-6 sm:p-8 relative flex flex-col rounded-2xl">
+            <button id="close-payment-modal" class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors text-3xl">&times;</button>
+             <div class="text-center">
                 <h1 class="text-2xl sm:text-3xl font-bold text-high-contrast tracking-tight">Make a Secure Payment</h1>
                 <p class="text-gray-300 mt-2 text-high-contrast text-sm sm:text-base">Choose your preferred payment method below.</p>
             </div>
 
-            <!-- Direct App Payments -->
-            <div class="space-y-4">
+            <div class="space-y-4 mt-8">
                 <h2 class="text-lg font-semibold text-cyan-300 text-high-contrast">1. Pay Directly via App</h2>
                 <p class="text-center text-sm text-gray-300 text-high-contrast">Click an icon to pay. (Works on mobile only)</p>
                 <div class="grid grid-cols-3 gap-4">
-                    <!-- Google Pay Button -->
-                    <a href="upi://pay?pa=9824594156@okbizaxis&pn=Your%20Name&cu=INR" class="glass-panel hover:bg-white/10 p-4 rounded-lg flex flex-col items-center justify-center space-y-2 transition-all duration-300 transform hover:scale-105">
-                        <div class="h-8 flex items-center">
-                           <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Google_Pay_Logo.svg/2560px-Google_Pay_Logo.svg.png" alt="Google Pay" class="h-full w-auto object-contain">
-                        </div>
+                    <a href="upi://pay?pa=9824594156@okbizaxis&pn=Your%20Name&cu=INR" class="glass-effect hover:bg-white/10 p-4 rounded-lg flex flex-col items-center justify-center space-y-2 transition-all duration-300 transform hover:scale-105">
+                        <div class="h-8 flex items-center"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Google_Pay_Logo.svg/2560px-Google_Pay_Logo.svg.png" alt="Google Pay" class="h-full w-auto object-contain"></div>
                         <span class="font-semibold text-gray-200 text-xs text-high-contrast">Google Pay</span>
                     </a>
-                    <!-- PhonePe Button -->
-                    <a href="phonepe://pay?pa=9824594156@okbizaxis&pn=Your%20Name&cu=INR" class="glass-panel hover:bg-white/10 p-4 rounded-lg flex flex-col items-center justify-center space-y-2 transition-all duration-300 transform hover:scale-105">
-                         <div class="h-8 flex items-center">
-                           <img src="https://upload.wikimedia.org/wikipedia/commons/7/71/PhonePe_Logo.svg" alt="PhonePe" class="h-full w-auto object-contain">
-                        </div>
-                         <span class="font-semibold text-gray-200 text-xs text-high-contrast">PhonePe</span>
+                    <a href="phonepe://pay?pa=9824594156@okbizaxis&pn=Your%20Name&cu=INR" class="glass-effect hover:bg-white/10 p-4 rounded-lg flex flex-col items-center justify-center space-y-2 transition-all duration-300 transform hover:scale-105">
+                        <div class="h-8 flex items-center"><img src="https://upload.wikimedia.org/wikipedia/commons/7/71/PhonePe_Logo.svg" alt="PhonePe" class="h-full w-auto object-contain"></div>
+                        <span class="font-semibold text-gray-200 text-xs text-high-contrast">PhonePe</span>
                     </a>
-                    <!-- BHIM UPI Button -->
-                    <a href="bhim://upi/pay?pa=9824594156@okbizaxis&pn=Your%20Name&cu=INR" class="glass-panel hover:bg-white/10 p-4 rounded-lg flex flex-col items-center justify-center space-y-2 transition-all duration-300 transform hover:scale-105">
-                         <div class="h-8 flex items-center">
-                            <img src="https://upload.wikimedia.org/wikipedia/en/6/65/BHIM_SVG_Logo.svg" alt="BHIM UPI" class="h-full w-auto object-contain">
-                        </div>
-                         <span class="font-semibold text-gray-200 text-xs text-high-contrast">BHIM</span>
+                    <a href="bhim://upi/pay?pa=9824594156@okbizaxis&pn=Your%20Name&cu=INR" class="glass-effect hover:bg-white/10 p-4 rounded-lg flex flex-col items-center justify-center space-y-2 transition-all duration-300 transform hover:scale-105">
+                        <div class="h-8 flex items-center"><img src="https://upload.wikimedia.org/wikipedia/en/6/65/BHIM_SVG_Logo.svg" alt="BHIM UPI" class="h-full w-auto object-contain"></div>
+                        <span class="font-semibold text-gray-200 text-xs text-high-contrast">BHIM</span>
                     </a>
                 </div>
             </div>
 
-            <!-- Divider -->
-            <div class="relative">
-                <div class="absolute inset-0 flex items-center" aria-hidden="true"><div class="w-full border-t border-white/20"></div></div>
-                <div class="relative flex justify-center"><span class="bg-transparent px-2 text-sm text-gray-300 text-high-contrast">OR</span></div>
-            </div>
+            <div class="relative my-6"><div class="absolute inset-0 flex items-center" aria-hidden="true"><div class="w-full border-t border-white/20"></div></div><div class="relative flex justify-center"><span class="bg-[#0c0a1a] px-2 text-sm text-gray-300 text-high-contrast">OR</span></div></div>
 
-            <!-- Payment Method 2: QR Code -->
             <div class="space-y-4">
                 <h2 class="text-lg font-semibold text-cyan-300 text-high-contrast">2. Scan & Pay</h2>
-                <div class="bg-white/90 p-4 rounded-lg flex justify-center">
-                    <img src="https://hookstar1993.github.io/paymehook/qr-9824594156@okbizaxis.png" alt="QR Code for Payment" class="rounded-md w-full max-w-[250px]">
-                </div>
+                <div class="bg-white/90 p-4 rounded-lg flex justify-center"><img src="https://hookstar1993.github.io/paymehook/qr-9824594156@okbizaxis.png" alt="QR Code for Payment" class="rounded-md w-full max-w-[200px]"></div>
             </div>
-
-            <!-- Payment Method 3: UPI ID -->
-            <div class="space-y-4">
-                <h2 class="text-lg font-semibold text-cyan-300 text-high-contrast">3. Pay with UPI ID</h2>
-                <div class="glass-panel p-4 rounded-lg flex justify-between items-center">
-                    <span id="upiId" class="font-medium text-high-contrast text-sm sm:text-base break-all">9824594156@upi</span>
-                    <button onclick="copyToClipboard('upiId', this)" title="Copy UPI ID" class="p-2 rounded-lg transition-all duration-200 bg-white/10 hover:bg-white/20 flex-shrink-0 ml-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" viewBox="0 0 20 20" fill="currentColor"><path d="M7 9a2 2 0 012-2h6a2 2 0 012 2v6a2 2 0 01-2 2H9a2 2 0 01-2-2V9z" /><path d="M5 3a2 2 0 00-2 2v6a2 2 0 002 2V5h6a2 2 0 00-2-2H5z" /></svg>
-                    </button>
+            
+            <div class="space-y-4 mt-6">
+                 <h2 class="text-lg font-semibold text-cyan-300 text-high-contrast">3. Pay with UPI ID</h2>
+                 <div class="glass-effect p-4 rounded-lg flex justify-between items-center">
+                     <span id="upiId" class="font-medium text-high-contrast text-sm sm:text-base break-all">9824594156@okbizaxis</span>
+                     <button onclick="copyToClipboard('upiId', this)" title="Copy UPI ID" class="p-2 rounded-lg transition-all duration-200 bg-white/10 hover:bg-white/20 flex-shrink-0 ml-3">
+                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" viewBox="0 0 20 20" fill="currentColor"><path d="M7 9a2 2 0 012-2h6a2 2 0 012 2v6a2 2 0 01-2 2H9a2 2 0 01-2-2V9z" /><path d="M5 3a2 2 0 00-2 2v6a2 2 0 002 2V5h6a2 2 0 00-2-2H5z" /></svg>
+                     </button>
+                 </div>
+            </div>
+            
+            <div class="space-y-4 mt-6">
+                <h2 class="text-lg font-semibold text-cyan-300 text-high-contrast">4. Direct Bank Transfer</h2>
+                <div class="glass-effect p-4 rounded-lg space-y-4 text-sm sm:text-base">
+                    <div class="flex justify-between items-center"><span class="text-gray-200 text-high-contrast">Account Name:</span><div class="flex items-center space-x-3"><span id="accName" class="font-medium text-high-contrast text-right">SAVANI HARDEEP M.</span><button onclick="copyToClipboard('accName', this)" title="Copy Account Name" class="p-1.5 rounded-lg transition-all duration-200 bg-white/10 hover:bg-white/20 flex-shrink-0"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" viewBox="0 0 20 20" fill="currentColor"><path d="M7 9a2 2 0 012-2h6a2 2 0 012 2v6a2 2 0 01-2 2H9a2 2 0 01-2-2V9z" /><path d="M5 3a2 2 0 00-2 2v6a2 2 0 002 2V5h6a2 2 0 00-2-2H5z" /></svg></button></div></div>
+                    <div class="flex justify-between items-center"><span class="text-gray-200 text-high-contrast">Bank Name:</span><div class="flex items-center space-x-3"><span id="bankName" class="font-medium text-high-contrast">STATE BANK OF INDIA</span><button onclick="copyToClipboard('bankName', this)" title="Copy Bank Name" class="p-1.5 rounded-lg transition-all duration-200 bg-white/10 hover:bg-white/20 flex-shrink-0"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" viewBox="0 0 20 20" fill="currentColor"><path d="M7 9a2 2 0 012-2h6a2 2 0 012 2v6a2 2 0 01-2 2H9a2 2 0 01-2-2V9z" /><path d="M5 3a2 2 0 00-2 2v6a2 2 0 002 2V5h6a2 2 0 00-2-2H5z" /></svg></button></div></div>
+                    <div class="flex justify-between items-center"><span class="text-gray-200 text-high-contrast">Account No:</span><div class="flex items-center space-x-3"><span id="accNum" class="font-medium text-high-contrast">40003791171</span><button onclick="copyToClipboard('accNum', this)" title="Copy Account Number" class="p-1.5 rounded-lg transition-all duration-200 bg-white/10 hover:bg-white/20 flex-shrink-0"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" viewBox="0 0 20 20" fill="currentColor"><path d="M7 9a2 2 0 012-2h6a2 2 0 012 2v6a2 2 0 01-2 2H9a2 2 0 01-2-2V9z" /><path d="M5 3a2 2 0 00-2 2v6a2 2 0 002 2V5h6a2 2 0 00-2-2H5z" /></svg></button></div></div>
+                    <div class="flex justify-between items-center"><span class="text-gray-200 text-high-contrast">IFSC Code:</span><div class="flex items-center space-x-3"><span id="ifscCode" class="font-medium text-high-contrast">SBIN0060236</span><button onclick="copyToClipboard('ifscCode', this)" title="Copy IFSC Code" class="p-1.5 rounded-lg transition-all duration-200 bg-white/10 hover:bg-white/20 flex-shrink-0"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" viewBox="0 0 20 20" fill="currentColor"><path d="M7 9a2 2 0 012-2h6a2 2 0 012 2v6a2 2 0 01-2 2H9a2 2 0 01-2-2V9z" /><path d="M5 3a2 2 0 00-2 2v6a2 2 0 002 2V5h6a2 2 0 00-2-2H5z" /></svg></button></div></div>
                 </div>
             </div>
             
-            <!-- Payment Method 4: Bank Transfer -->
-            <div class="space-y-4">
-                <h2 class="text-lg font-semibold text-cyan-300 text-high-contrast">4. Direct Bank Transfer</h2>
-                <div class="glass-panel p-4 rounded-lg space-y-4 text-sm sm:text-base">
-                    <div class="flex justify-between items-center">
-                        <span class="text-gray-200 text-high-contrast">Account Name:</span>
-                        <div class="flex items-center space-x-3">
-                            <span id="accName" class="font-medium text-high-contrast text-right">SAVANI HARDEEP M.</span>
-                            <button onclick="copyToClipboard('accName', this)" title="Copy Account Name" class="p-1.5 rounded-lg transition-all duration-200 bg-white/10 hover:bg-white/20 flex-shrink-0">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" viewBox="0 0 20 20" fill="currentColor"><path d="M7 9a2 2 0 012-2h6a2 2 0 012 2v6a2 2 0 01-2 2H9a2 2 0 01-2-2V9z" /><path d="M5 3a2 2 0 00-2 2v6a2 2 0 002 2V5h6a2 2 0 00-2-2H5z" /></svg>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <span class="text-gray-200 text-high-contrast">Bank Name:</span>
-                        <div class="flex items-center space-x-3">
-                            <span id="bankName" class="font-medium text-high-contrast">STATE BANK OF INDIA</span>
-                            <button onclick="copyToClipboard('bankName', this)" title="Copy Bank Name" class="p-1.5 rounded-lg transition-all duration-200 bg-white/10 hover:bg-white/20 flex-shrink-0">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" viewBox="0 0 20 20" fill="currentColor"><path d="M7 9a2 2 0 012-2h6a2 2 0 012 2v6a2 2 0 01-2 2H9a2 2 0 01-2-2V9z" /><path d="M5 3a2 2 0 00-2 2v6a2 2 0 002 2V5h6a2 2 0 00-2-2H5z" /></svg>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <span class="text-gray-200 text-high-contrast">Account No:</span>
-                        <div class="flex items-center space-x-3">
-                            <span id="accNum" class="font-medium text-high-contrast">40003791171</span>
-                            <button onclick="copyToClipboard('accNum', this)" title="Copy Account Number" class="p-1.5 rounded-lg transition-all duration-200 bg-white/10 hover:bg-white/20 flex-shrink-0">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" viewBox="0 0 20 20" fill="currentColor"><path d="M7 9a2 2 0 012-2h6a2 2 0 012 2v6a2 2 0 01-2 2H9a2 2 0 01-2-2V9z" /><path d="M5 3a2 2 0 00-2 2v6a2 2 0 002 2V5h6a2 2 0 00-2-2H5z" /></svg>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <span class="text-gray-200 text-high-contrast">IFSC Code:</span>
-                        <div class="flex items-center space-x-3">
-                            <span id="ifscCode" class="font-medium text-high-contrast">SBIN0060236</span>
-                            <button onclick="copyToClipboard('ifscCode', this)" title="Copy IFSC Code" class="p-1.5 rounded-lg transition-all duration-200 bg-white/10 hover:bg-white/20 flex-shrink-0">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" viewBox="0 0 20 20" fill="currentColor"><path d="M7 9a2 2 0 012-2h6a2 2 0 012 2v6a2 2 0 01-2 2H9a2 2 0 01-2-2V9z" /><path d="M5 3a2 2 0 00-2 2v6a2 2 0 002 2V5h6a2 2 0 00-2-2H5z" /></svg>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- WhatsApp Confirmation Section -->
-            <div class="space-y-4 pt-4">
+            <div class="space-y-4 pt-6">
                 <h2 class="text-lg font-semibold text-cyan-300 text-high-contrast">5. Confirm on WhatsApp</h2>
                 <p class="text-center text-sm text-gray-300 text-high-contrast">After payment, click the button below to send us the screenshot for confirmation.</p>
                 <a href="https://wa.me/919824594156?text=Hello!%20I%20have%20completed%20the%20payment.%20Here%20is%20the%20screenshot." target="_blank" rel="noopener noreferrer" class="w-full bg-green-500/80 hover:bg-green-500/90 text-white font-bold py-3 px-4 rounded-lg flex items-center justify-center space-x-3 transition-all duration-300 transform hover:scale-105 glass-panel border-green-400/50">
@@ -206,66 +331,547 @@
             </div>
         </div>
     </div>
-
+    
     <!-- Notification element for copy feedback -->
-    <div id="notification" class="fixed bottom-5 right-5 glass-panel bg-green-500/80 border-green-400/50 text-white py-2 px-4 rounded-lg shadow-lg transform translate-y-24 opacity-0 transition-all duration-300">
+    <div id="notification" class="fixed bottom-5 right-5 glass-effect bg-green-500/80 border-green-400/50 text-white py-2 px-4 rounded-lg shadow-lg transform translate-y-24 opacity-0 transition-all duration-300">
         Copied to clipboard!
     </div>
+    
+    <!-- Mandir Timing Modal -->
+    <div id="timing-modal" class="modal-backdrop hidden">
+        <div class="modal-content glass-effect p-6 sm:p-8 relative flex flex-col rounded-2xl">
+            <button id="close-timing-modal" class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors text-3xl">&times;</button>
+            <h2 class="text-3xl font-bold text-amber-300 page-title mb-4">Dwarkadhish Mandir Timings</h2>
+            <div id="timing-schedule" class="text-slate-300 overflow-y-auto pr-4 space-y-2">
+                <!-- Timings will be injected here by JavaScript -->
+            </div>
+        </div>
+    </div>
+
 
     <script>
-        function showNotification() {
-            const notification = document.getElementById('notification');
-            notification.classList.remove('translate-y-24', 'opacity-0');
-            notification.classList.add('translate-y-0', 'opacity-100');
-            setTimeout(() => {
-                notification.classList.add('translate-y-24', 'opacity-0');
-                notification.classList.remove('translate-y-0', 'opacity-100');
-            }, 2000);
-        }
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- DATA STRUCTURE ---
+            const journeyData = {
+                // --- 2025 DATA ---
+                "August 2025": { stay: { name: "No Stay At This Time", checkIn: "09-Aug-2025, 02:00 PM", checkOut: "09-Aug-2025, 07:41 PM", ticketUrl: "#" }, expenses: { train: 1675.40, stay: 0, food: 0, total: 1675.40 }, journeys: [ { from: "Surat", to: "Dwarka", trainName: "SAURASHTRA MAIL", trainNo: "#22945", pnr: "8334056450", departure: "09-Aug-2025, 01:07 AM", arrival: "09-Aug-2025, 01:10 PM", ticketUrl: "https://hookstar1993.github.io/dwarka/tickets2025/08-2025/ST-DWRK_09-Aug-2025_-_SAURASHTRA_MAIL_(22945)_-_PNR-8334056450_Seat-S3-21-22.pdf" }, { from: "Dwarka", to: "Surat", trainName: "Okha BSP SF Express", trainNo: "#22939", pnr: "8434098659", departure: "09-Aug-2025, 07:41 PM", arrival: "10-Aug-2025, 08:01 AM", ticketUrl: "https://hookstar1993.github.io/dwarka/tickets2025/08-2025/DWRK-ST_09-Aug-2025_-_OKHA_BSP_SF_EXP_(22939)_-_PNR-8434098659_Seat-S5-28-32.pdf" } ] },
+                "September 2025": { stay: { name: " Dwarka - Gayatri Shantivan", checkIn: "07-Sep-2025, 01:00 PM", checkOut: "08-Sep-2025, 12:00 PM", ticketUrl: "https://hookstar1993.github.io/dwarka/tickets2025/09-2025/101347153_Stay_Confirmation_Gaytri_Shantivan_07-09-2025_to_08-09-2025.pdf" }, expenses: { train: 2426.30, stay: 880.5, food: 0, total: 3306.8 }, journeys: [ { from: "Surat", to: "Dwarka", trainName: "SAURASHTRA MAIL", trainNo: "#22945", pnr: "8335174786", departure: "07-Sep-2025, 01:07 AM", arrival: "07-Sep-2025, 01:10 AM", ticketUrl: "https://hookstar1993.github.io/dwarka/tickets2025/09-2025/ST-DWRK_07-Sept-2025_-_SAURASHTRA_MAIL_(22945)_-_PNR-8335174786_Seat-S3-17-23-24.pdf" }, { from: "Dwarka", to: "Surat", trainName: "Okha ERS Express", trainNo: "#16337", pnr: "8335256036", departure: "08-Sep-2025, 07:16 AM", arrival: "08-Sep-2025, 07:24 PM", ticketUrl: "https://hookstar1993.github.io/dwarka/tickets2025/09-2025/DWRK-ST_08-Sept-2025_-_OKHA_ERS_EXP_(16337)_-_PNR-8335256036_Seat-S7-9-15-16.pdf" } ] },
+                "October 2025": { stay: { name: "NON STAY", checkIn: "06-Oct-2025, 10:00 AM", checkOut: "07-Oct-2025, 03:00 PM", ticketUrl: "#" }, expenses: { train: 0, stay: 0, food: 0, total: 0 }, journeys: [ { from: "Surat", to: "Dwarka", trainName: "PURI OKHA SF", trainNo: "#20819", pnr: "NOT BOOKED", departure: "06-Oct-2025, 07:38 PM (Evening)", arrival: "07-Oct-2025, 09:03 AM (Morning)", ticketUrl: "#" }, { from: "Dwarka", to: "Jamnagar", trainName: "Okha BVC Express", trainNo: "#19210", pnr: "NOT BOOKED", departure: "07-Oct-2025, 03:55 PM", arrival: "07-Oct-2025, 06:33 PM", ticketUrl: "#" }, { from: "Jamnagar", to: "Surat", trainName: "BDTS Humsafar", trainNo: "#22924", pnr: "NOT BOOKED", departure: "07-Oct-2025, 08:15 PM (Evening)", arrival: "08-Oct-2025, 05:25 AM(Morning)", ticketUrl: "#" } ] }
+                
+                /*
+                // --- COMMENT SHURU: Yahan se comment hatakar aap November 2025 aur aage ke mahino ki details live kar sakte hain. ---
+                , "November 2025": { stay: { name: "Shree Dutt Dharmashala", checkIn: "05-Nov-2025, 10:00 AM", checkOut: "05-Nov-2025, 03:00 PM", ticketUrl: "#" }, expenses: { train: 1250, stay: 750, food: 550, total: 2550 }, journeys: [ { from: "Surat", to: "Dwarka", trainName: "Puri Okha SF Express", trainNo: "#20819", pnr: "3456789012", departure: "04-Nov-2025, 07:38 PM", arrival: "05-Nov-2025, 09:03 AM", ticketUrl: "#" }, { from: "Dwarka", to: "Jamnagar", trainName: "Okha BVC Express", trainNo: "#19210", pnr: "3456789013", departure: "05-Nov-2025, 03:55 PM", arrival: "05-Nov-2025, 06:33 PM", ticketUrl: "#" }, { from: "Jamnagar", to: "Surat", trainName: "BDTS Humsafar", trainNo: "#22924", pnr: "3456789014", departure: "05-Nov-2025, 08:15 PM", arrival: "06-Nov-2025, 05:25 AM", ticketUrl: "#" } ] },
+                "December 2025": { stay: { name: "Shree Dutt Dharmashala", checkIn: "05-Dec-2025, 10:00 AM", checkOut: "05-Dec-2025, 03:00 PM", ticketUrl: "#" }, expenses: { train: 1250, stay: 750, food: 550, total: 2550 }, journeys: [ { from: "Surat", to: "Dwarka", trainName: "Puri Okha SF Express", trainNo: "#20819", pnr: "4567890123", departure: "04-Dec-2025, 07:38 PM", arrival: "05-Dec-2025, 09:03 AM", ticketUrl: "#" }, { from: "Dwarka", to: "Jamnagar", trainName: "Okha BVC Express", trainNo: "#19210", pnr: "4567890124", departure: "05-Dec-2025, 03:55 PM", arrival: "05-Dec-2025, 06:33 PM", ticketUrl: "#" }, { from: "Jamnagar", to: "Surat", trainName: "BDTS Humsafar", trainNo: "#22924", pnr: "4567890125", departure: "05-Dec-2025, 08:15 PM", arrival: "06-Dec-2025, 05:25 AM", ticketUrl: "#" } ] },
+                // --- 2026 DATA ---
+                "January 2026": { stay: { name: "Shree Dutt Dharmashala", checkIn: "03-Jan-2026, 10:00 AM", checkOut: "03-Jan-2026, 03:00 PM", ticketUrl: "#" }, expenses: { train: 1250, stay: 750, food: 550, total: 2550 }, journeys: [ { from: "Surat", to: "Dwarka", trainName: "Puri Okha SF Express", trainNo: "#20819", pnr: "5678901234", departure: "02-Jan-2026, 07:38 PM", arrival: "03-Jan-2026, 09:03 AM", ticketUrl: "#" }, { from: "Dwarka", to: "Jamnagar", trainName: "Okha BVC Express", trainNo: "#19210", pnr: "5678901235", departure: "03-Jan-2026, 03:55 PM", arrival: "03-Jan-2026, 06:33 PM", ticketUrl: "#" }, { from: "Jamnagar", to: "Surat", trainName: "BDTS Humsafar", trainNo: "#22924", pnr: "5678901236", departure: "03-Jan-2026, 08:15 PM", arrival: "04-Jan-2026, 05:25 AM", ticketUrl: "#" } ] },
+                "February 2026": { stay: { name: "Shree Dutt Dharmashala", checkIn: "02-Feb-2026, 10:00 AM", checkOut: "02-Feb-2026, 03:00 PM", ticketUrl: "#" }, expenses: { train: 1250, stay: 750, food: 550, total: 2550 }, journeys: [ { from: "Surat", to: "Dwarka", trainName: "Puri Okha SF Express", trainNo: "#20819", pnr: "6789012345", departure: "01-Feb-2026, 07:38 PM", arrival: "02-Feb-2026, 09:03 AM", ticketUrl: "#" }, { from: "Dwarka", to: "Jamnagar", trainName: "Okha BVC Express", trainNo: "#19210", pnr: "6789012346", departure: "02-Feb-2026, 03:55 PM", arrival: "02-Feb-2026, 06:33 PM", ticketUrl: "#" }, { from: "Jamnagar", to: "Surat", trainName: "BDTS Humsafar", trainNo: "#22924", pnr: "6789012347", departure: "02-Feb-2026, 08:15 PM", arrival: "03-Feb-2026, 05:25 AM", ticketUrl: "#" } ] },
+                "March 2026": { stay: { name: "Shree Dutt Dharmashala", checkIn: "03-Mar-2026, 10:00 AM", checkOut: "03-Mar-2026, 03:00 PM", ticketUrl: "#" }, expenses: { train: 1250, stay: 750, food: 550, total: 2550 }, journeys: [ { from: "Surat", to: "Dwarka", trainName: "Puri Okha SF Express", trainNo: "#20819", pnr: "7890123456", departure: "02-Mar-2026, 07:38 PM", arrival: "03-Mar-2026, 09:03 AM", ticketUrl: "#" }, { from: "Dwarka", to: "Jamnagar", trainName: "Okha BVC Express", trainNo: "#19210", pnr: "7890123457", departure: "03-Mar-2026, 03:55 PM", arrival: "03-Mar-2026, 06:33 PM", ticketUrl: "#" }, { from: "Jamnagar", to: "Surat", trainName: "BDTS Humsafar", trainNo: "#22924", pnr: "7890123458", departure: "03-Mar-2026, 08:15 PM", arrival: "04-Mar-2026, 05:25 AM", ticketUrl: "#" } ] },
+                "April 2026": { stay: { name: "Shree Dutt Dharmashala", checkIn: "02-Apr-2026, 10:00 AM", checkOut: "02-Apr-2026, 03:00 PM", ticketUrl: "#" }, expenses: { train: 1250, stay: 750, food: 550, total: 2550 }, journeys: [ { from: "Surat", to: "Dwarka", trainName: "Puri Okha SF Express", trainNo: "#20819", pnr: "8901234567", departure: "01-Apr-2026, 07:38 PM", arrival: "02-Apr-2026, 09:03 AM", ticketUrl: "#" }, { from: "Dwarka", to: "Jamnagar", trainName: "Okha BVC Express", trainNo: "#19210", pnr: "8901234568", departure: "02-Apr-2026, 03:55 PM", arrival: "02-Apr-2026, 06:33 PM", ticketUrl: "#" }, { from: "Jamnagar", to: "Surat", trainName: "BDTS Humsafar", trainNo: "#22924", pnr: "8901234569", departure: "02-Apr-2026, 08:15 PM", arrival: "03-Apr-2026, 05:25 AM", ticketUrl: "#" } ] },
+                "May 2026": { stay: { name: "Shree Dutt Dharmashala", checkIn: "01-May-2026, 10:00 AM", checkOut: "01-May-2026, 03:00 PM", ticketUrl: "#" }, expenses: { train: 1250, stay: 750, food: 550, total: 2550 }, journeys: [ { from: "Surat", to: "Dwarka", trainName: "Puri Okha SF Express", trainNo: "#20819", pnr: "9012345678", departure: "30-Apr-2026, 07:38 PM", arrival: "01-May-2026, 09:03 AM", ticketUrl: "#" }, { from: "Dwarka", to: "Jamnagar", trainName: "Okha BVC Express", trainNo: "#19210", pnr: "9012345679", departure: "01-May-2026, 03:55 PM", arrival: "01-May-2026, 06:33 PM", ticketUrl: "#" }, { from: "Jamnagar", to: "Surat", trainName: "BDTS Humsafar", trainNo: "#22924", pnr: "9012345680", departure: "01-May-2026, 08:15 PM", arrival: "02-May-2026, 05:25 AM", ticketUrl: "#" } ] },
+                "June 2026": { stay: { name: "Shree Dutt Dharmashala", checkIn: "30-Jun-2026, 10:00 AM", checkOut: "30-Jun-2026, 03:00 PM", ticketUrl: "#" }, expenses: { train: 1250, stay: 750, food: 550, total: 2550 }, journeys: [ { from: "Surat", to: "Dwarka", trainName: "Puri Okha SF Express", trainNo: "#20819", pnr: "1234509876", departure: "29-Jun-2026, 07:38 PM", arrival: "30-Jun-2026, 09:03 AM", ticketUrl: "#" }, { from: "Dwarka", to: "Jamnagar", trainName: "Okha BVC Express", trainNo: "#19210", pnr: "1234509877", departure: "30-Jun-2026, 03:55 PM", arrival: "30-Jun-2026, 06:33 PM", ticketUrl: "#" }, { from: "Jamnagar", to: "Surat", trainName: "BDTS Humsafar", trainNo: "#22924", pnr: "1234509878", departure: "30-Jun-2026, 08:15 PM", arrival: "01-Jul-2026, 05:25 AM", ticketUrl: "#" } ] },
+                "July 2026": { stay: { name: "Shree Dutt Dharmashala", checkIn: "29-Jul-2026, 10:00 AM", checkOut: "29-Jul-2026, 03:00 PM", ticketUrl: "#" }, expenses: { train: 1250, stay: 750, food: 550, total: 2550 }, journeys: [ { from: "Surat", to: "Dwarka", trainName: "Puri Okha SF Express", trainNo: "#20819", pnr: "2345610987", departure: "28-Jul-2026, 07:38 PM", arrival: "29-Jul-2026, 09:03 AM", ticketUrl: "#" }, { from: "Dwarka", to: "Jamnagar", trainName: "Okha BVC Express", trainNo: "#19210", pnr: "2345610988", departure: "29-Jul-2026, 03:55 PM", arrival: "29-Jul-2026, 06:33 PM", ticketUrl: "#" }, { from: "Jamnagar", to: "Surat", trainName: "BDTS Humsafar", trainNo: "#22924", pnr: "2345610989", departure: "29-Jul-2026, 08:15 PM", arrival: "30-Jul-2026, 05:25 AM", ticketUrl: "#" } ] },
+                "August 2026": { stay: { name: "Shree Dutt Dharmashala", checkIn: "28-Aug-2026, 10:00 AM", checkOut: "28-Aug-2026, 03:00 PM", ticketUrl: "#" }, expenses: { train: 1250, stay: 750, food: 550, total: 2550 }, journeys: [ { from: "Surat", to: "Dwarka", trainName: "Puri Okha SF Express", trainNo: "#20819", pnr: "3456721098", departure: "27-Aug-2026, 07:38 PM", arrival: "28-Aug-2026, 09:03 AM", ticketUrl: "#" }, { from: "Dwarka", to: "Jamnagar", trainName: "Okha BVC Express", trainNo: "#19210", pnr: "3456721099", departure: "28-Aug-2026, 03:55 PM", arrival: "28-Aug-2026, 06:33 PM", ticketUrl: "#" }, { from: "Jamnagar", to: "Surat", trainName: "BDTS Humsafar", trainNo: "#22924", pnr: "3456721100", departure: "28-Aug-2026, 08:15 PM", arrival: "29-Aug-2026, 05:25 AM", ticketUrl: "#" } ] },
+                "September 2026": { stay: { name: "Shree Dutt Dharmashala", checkIn: "26-Sep-2026, 10:00 AM", checkOut: "26-Sep-2026, 03:00 PM", ticketUrl: "#" }, expenses: { train: 1250, stay: 750, food: 550, total: 2550 }, journeys: [ { from: "Surat", to: "Dwarka", trainName: "Puri Okha SF Express", trainNo: "#20819", pnr: "4567832109", departure: "25-Sep-2026, 07:38 PM", arrival: "26-Sep-2026, 09:03 AM", ticketUrl: "#" }, { from: "Dwarka", to: "Jamnagar", trainName: "Okha BVC Express", trainNo: "#19210", pnr: "4567832110", departure: "26-Sep-2026, 03:55 PM", arrival: "26-Sep-2026, 06:33 PM", ticketUrl: "#" }, { from: "Jamnagar", to: "Surat", trainName: "BDTS Humsafar", trainNo: "#22924", pnr: "4567832111", departure: "26-Sep-2026, 08:15 PM", arrival: "27-Sep-2026, 05:25 AM", ticketUrl: "#" } ] },
+                "October 2026": { stay: { name: "Shree Dutt Dharmashala", checkIn: "26-Oct-2026, 10:00 AM", checkOut: "26-Oct-2026, 03:00 PM", ticketUrl: "#" }, expenses: { train: 1250, stay: 750, food: 550, total: 2550 }, journeys: [ { from: "Surat", to: "Dwarka", trainName: "Puri Okha SF Express", trainNo: "#20819", pnr: "5678943210", departure: "25-Oct-2026, 07:38 PM", arrival: "26-Oct-2026, 09:03 AM", ticketUrl: "#" }, { from: "Dwarka", to: "Jamnagar", trainName: "Okha BVC Express", trainNo: "#19210", pnr: "5678943211", departure: "26-Oct-2026, 03:55 PM", arrival: "26-Oct-2026, 06:33 PM", ticketUrl: "#" }, { from: "Jamnagar", to: "Surat", trainName: "BDTS Humsafar", trainNo: "#22924", pnr: "5678943212", departure: "26-Oct-2026, 08:15 PM", arrival: "27-Oct-2026, 05:25 AM", ticketUrl: "#" } ] },
+                "November 2026": { stay: { name: "Shree Dutt Dharmashala", checkIn: "24-Nov-2026, 10:00 AM", checkOut: "24-Nov-2026, 03:00 PM", ticketUrl: "#" }, expenses: { train: 1250, stay: 750, food: 550, total: 2550 }, journeys: [ { from: "Surat", to: "Dwarka", trainName: "Puri Okha SF Express", trainNo: "#20819", pnr: "6789054321", departure: "23-Nov-2026, 07:38 PM", arrival: "24-Nov-2026, 09:03 AM", ticketUrl: "#" }, { from: "Dwarka", to: "Jamnagar", trainName: "Okha BVC Express", trainNo: "#19210", pnr: "6789054322", departure: "24-Nov-2026, 03:55 PM", arrival: "24-Nov-2026, 06:33 PM", ticketUrl: "#" }, { from: "Jamnagar", to: "Surat", trainName: "BDTS Humsafar", trainNo: "#22924", pnr: "6789054323", departure: "24-Nov-2026, 08:15 PM", arrival: "25-Nov-2026, 05:25 AM", ticketUrl: "#" } ] },
+                "December 2026": { stay: { name: "Shree Dutt Dharmashala", checkIn: "24-Dec-2026, 10:00 AM", checkOut: "24-Dec-2026, 03:00 PM", ticketUrl: "#" }, expenses: { train: 1250, stay: 750, food: 550, total: 2550 }, journeys: [ { from: "Surat", to: "Dwarka", trainName: "Puri Okha SF Express", trainNo: "#20819", pnr: "7890165432", departure: "23-Dec-2026, 07:38 PM", arrival: "24-Dec-2026, 09:03 AM", ticketUrl: "#" }, { from: "Dwarka", to: "Jamnagar", trainName: "Okha BVC Express", trainNo: "#19210", pnr: "7890165433", departure: "24-Dec-2026, 03:55 PM", arrival: "24-Dec-2026, 06:33 PM", ticketUrl: "#" }, { from: "Jamnagar", to: "Surat", trainName: "BDTS Humsafar", trainNo: "#22924", pnr: "7890165434", departure: "24-Dec-2026, 08:15 PM", arrival: "25-Dec-2026, 05:25 AM", ticketUrl: "#" } ] },
+                // --- 2027 DATA ---
+                "January 2027": { stay: { name: "Shree Dutt Dharmashala", checkIn: "22-Jan-2027, 10:00 AM", checkOut: "22-Jan-2027, 03:00 PM", ticketUrl: "#" }, expenses: { train: 1250, stay: 750, food: 550, total: 2550 }, journeys: [ { from: "Surat", to: "Dwarka", trainName: "Puri Okha SF Express", trainNo: "#20819", pnr: "8901276543", departure: "21-Jan-2027, 07:38 PM", arrival: "22-Jan-2027, 09:03 AM", ticketUrl: "#" }, { from: "Dwarka", to: "Jamnagar", trainName: "Okha BVC Express", trainNo: "#19210", pnr: "8901276544", departure: "22-Jan-2027, 03:55 PM", arrival: "22-Jan-2027, 06:33 PM", ticketUrl: "#" }, { from: "Jamnagar", to: "Surat", trainName: "BDTS Humsafar", trainNo: "#22924", pnr: "8901276545", departure: "22-Jan-2027, 08:15 PM", arrival: "23-Jan-2027, 05:25 AM", ticketUrl: "#" } ] },
+                "February 2027": { stay: { name: "Shree Dutt Dharmashala", checkIn: "21-Feb-2027, 10:00 AM", checkOut: "21-Feb-2027, 03:00 PM", ticketUrl: "#" }, expenses: { train: 1250, stay: 750, food: 550, total: 2550 }, journeys: [ { from: "Surat", to: "Dwarka", trainName: "Puri Okha SF Express", trainNo: "#20819", pnr: "9012387654", departure: "20-Feb-2027, 07:38 PM", arrival: "21-Feb-2027, 09:03 AM", ticketUrl: "#" }, { from: "Dwarka", to: "Jamnagar", trainName: "Okha BVC Express", trainNo: "#19210", pnr: "9012387655", departure: "21-Feb-2027, 03:55 PM", arrival: "21-Feb-2027, 06:33 PM", ticketUrl: "#" }, { from: "Jamnagar", to: "Surat", trainName: "BDTS Humsafar", trainNo: "#22924", pnr: "9012387656", departure: "21-Feb-2027, 08:15 PM", arrival: "22-Feb-2027, 05:25 AM", ticketUrl: "#" } ] },
+                "March 2027": { stay: { name: "Shree Dutt Dharmashala", checkIn: "22-Mar-2027, 10:00 AM", checkOut: "22-Mar-2027, 03:00 PM", ticketUrl: "#" }, expenses: { train: 1250, stay: 750, food: 550, total: 2550 }, journeys: [ { from: "Surat", to: "Dwarka", trainName: "Puri Okha SF Express", trainNo: "#20819", pnr: "1234598765", departure: "21-Mar-2027, 07:38 PM", arrival: "22-Mar-2027, 09:03 AM", ticketUrl: "#" }, { from: "Dwarka", to: "Jamnagar", trainName: "Okha BVC Express", trainNo: "#19210", pnr: "1234598766", departure: "22-Mar-2027, 03:55 PM", arrival: "22-Mar-2027, 06:33 PM", ticketUrl: "#" }, { from: "Jamnagar", to: "Surat", trainName: "BDTS Humsafar", trainNo: "#22924", pnr: "1234598767", departure: "22-Mar-2027, 08:15 PM", arrival: "23-Mar-2027, 05:25 AM", ticketUrl: "#" } ] },
+                "April 2027": { stay: { name: "Shree Dutt Dharmashala", checkIn: "21-Apr-2027, 10:00 AM", checkOut: "21-Apr-2027, 03:00 PM", ticketUrl: "#" }, expenses: { train: 1250, stay: 750, food: 550, total: 2550 }, journeys: [ { from: "Surat", to: "Dwarka", trainName: "Puri Okha SF Express", trainNo: "#20819", pnr: "2345609876", departure: "20-Apr-2027, 07:38 PM", arrival: "21-Apr-2027, 09:03 AM", ticketUrl: "#" }, { from: "Dwarka", to: "Jamnagar", trainName: "Okha BVC Express", trainNo: "#19210", pnr: "2345609877", departure: "21-Apr-2027, 03:55 PM", arrival: "21-Apr-2027, 06:33 PM", ticketUrl: "#" }, { from: "Jamnagar", to: "Surat", trainName: "BDTS Humsafar", trainNo: "#22924", pnr: "2345609878", departure: "21-Apr-2027, 08:15 PM", arrival: "22-Apr-2027, 05:25 AM", ticketUrl: "#" } ] },
+                "May 2027": { stay: { name: "Shree Dutt Dharmashala", checkIn: "20-May-2027, 10:00 AM", checkOut: "20-May-2027, 03:00 PM", ticketUrl: "#" }, expenses: { train: 1250, stay: 750, food: 550, total: 2550 }, journeys: [ { from: "Surat", to: "Dwarka", trainName: "Puri Okha SF Express", trainNo: "#20819", pnr: "3456710987", departure: "19-May-2027, 07:38 PM", arrival: "20-May-2027, 09:03 AM", ticketUrl: "#" }, { from: "Dwarka", to: "Jamnagar", trainName: "Okha BVC Express", trainNo: "#19210", pnr: "3456710988", departure: "20-May-2027, 03:55 PM", arrival: "20-May-2027, 06:33 PM", ticketUrl: "#" }, { from: "Jamnagar", to: "Surat", trainName: "BDTS Humsafar", trainNo: "#22924", pnr: "3456710989", departure: "20-May-2027, 08:15 PM", arrival: "21-May-2027, 05:25 AM", ticketUrl: "#" } ] },
+                "June 2027": { stay: { name: "Shree Dutt Dharmashala", checkIn: "19-Jun-2027, 10:00 AM", checkOut: "19-Jun-2027, 03:00 PM", ticketUrl: "#" }, expenses: { train: 1250, stay: 750, food: 550, total: 2550 }, journeys: [ { from: "Surat", to: "Dwarka", trainName: "Puri Okha SF Express", trainNo: "#20819", pnr: "4567821098", departure: "18-Jun-2027, 07:38 PM", arrival: "19-Jun-2027, 09:03 AM", ticketUrl: "#" }, { from: "Dwarka", to: "Jamnagar", trainName: "Okha BVC Express", trainNo: "#19210", pnr: "4567821099", departure: "19-Jun-2027, 03:55 PM", arrival: "19-Jun-2027, 06:33 PM", ticketUrl: "#" }, { from: "Jamnagar", to: "Surat", trainName: "BDTS Humsafar", trainNo: "#22924", pnr: "4567821100", departure: "19-Jun-2027, 08:15 PM", arrival: "20-Jun-2027, 05:25 AM", ticketUrl: "#" } ] },
+                "July 2027": { stay: { name: "Shree Dutt Dharmashala", checkIn: "18-Jul-2027, 10:00 AM", checkOut: "18-Jul-2027, 03:00 PM", ticketUrl: "#" }, expenses: { train: 1250, stay: 750, food: 550, total: 2550 }, journeys: [ { from: "Surat", to: "Dwarka", trainName: "Puri Okha SF Express", trainNo: "#20819", pnr: "5678932109", departure: "17-Jul-2027, 07:38 PM", arrival: "18-Jul-2027, 09:03 AM", ticketUrl: "#" }, { from: "Dwarka", to: "Jamnagar", trainName: "Okha BVC Express", trainNo: "#19210", pnr: "5678932110", departure: "18-Jul-2027, 03:55 PM", arrival: "18-Jul-2027, 06:33 PM", ticketUrl: "#" }, { from: "Jamnagar", to: "Surat", trainName: "BDTS Humsafar", trainNo: "#22924", pnr: "5678932111", departure: "18-Jul-2027, 08:15 PM", arrival: "19-Jul-2027, 05:25 AM", ticketUrl: "#" } ] },
+                "August 2027": { stay: { name: "Shree Dutt Dharmashala", checkIn: "17-Aug-2027, 10:00 AM", checkOut: "17-Aug-2027, 03:00 PM", ticketUrl: "#" }, expenses: { train: 1250, stay: 750, food: 550, total: 2550 }, journeys: [ { from: "Surat", to: "Dwarka", trainName: "Puri Okha SF Express", trainNo: "#20819", pnr: "6789043210", departure: "16-Aug-2027, 07:38 PM", arrival: "17-Aug-2027, 09:03 AM", ticketUrl: "#" }, { from: "Dwarka", to: "Jamnagar", trainName: "Okha BVC Express", trainNo: "#19210", pnr: "6789043211", departure: "17-Aug-2027, 03:55 PM", arrival: "17-Aug-2027, 06:33 PM", ticketUrl: "#" }, { from: "Jamnagar", to: "Surat", trainName: "BDTS Humsafar", trainNo: "#22924", pnr: "6789043212", departure: "17-Aug-2027, 08:15 PM", arrival: "18-Aug-2027, 05:25 AM", ticketUrl: "#" } ] },
+                "September 2027": { stay: { name: "Shree Dutt Dharmashala", checkIn: "15-Sep-2027, 10:00 AM", checkOut: "15-Sep-2027, 03:00 PM", ticketUrl: "#" }, expenses: { train: 1250, stay: 750, food: 550, total: 2550 }, journeys: [ { from: "Surat", to: "Dwarka", trainName: "Puri Okha SF Express", trainNo: "#20819", pnr: "7890154321", departure: "14-Sep-2027, 07:38 PM", arrival: "15-Sep-2027, 09:03 AM", ticketUrl: "#" }, { from: "Dwarka", to: "Jamnagar", trainName: "Okha BVC Express", trainNo: "#19210", pnr: "7890154322", departure: "15-Sep-2027, 03:55 PM", arrival: "15-Sep-2027, 06:33 PM", ticketUrl: "#" }, { from: "Jamnagar", to: "Surat", trainName: "BDTS Humsafar", trainNo: "#22924", pnr: "7890154323", departure: "15-Sep-2027, 08:15 PM", arrival: "16-Sep-2027, 05:25 AM", ticketUrl: "#" } ] },
+                "October 2027": { stay: { name: "Shree Dutt Dharmashala", checkIn: "15-Oct-2027, 10:00 AM", checkOut: "15-Oct-2027, 03:00 PM", ticketUrl: "#" }, expenses: { train: 1250, stay: 750, food: 550, total: 2550 }, journeys: [ { from: "Surat", to: "Dwarka", trainName: "Puri Okha SF Express", trainNo: "#20819", pnr: "8901265432", departure: "14-Oct-2027, 07:38 PM", arrival: "15-Oct-2027, 09:03 AM", ticketUrl: "#" }, { from: "Dwarka", to: "Jamnagar", trainName: "Okha BVC Express", trainNo: "#19210", pnr: "8901265433", departure: "15-Oct-2027, 03:55 PM", arrival: "15-Oct-2027, 06:33 PM", ticketUrl: "#" }, { from: "Jamnagar", to: "Surat", trainName: "BDTS Humsafar", trainNo: "#22924", pnr: "8901265434", departure: "15-Oct-2027, 08:15 PM", arrival: "16-Oct-2027, 05:25 AM", ticketUrl: "#" } ] },
+                "November 2027": { stay: { name: "Shree Dutt Dharmashala", checkIn: "13-Nov-2027, 10:00 AM", checkOut: "13-Nov-2027, 03:00 PM", ticketUrl: "#" }, expenses: { train: 1250, stay: 750, food: 550, total: 2550 }, journeys: [ { from: "Surat", to: "Dwarka", trainName: "Puri Okha SF Express", trainNo: "#20819", pnr: "9012376543", departure: "12-Nov-2027, 07:38 PM", arrival: "13-Nov-2027, 09:03 AM", ticketUrl: "#" }, { from: "Dwarka", to: "Jamnagar", trainName: "Okha BVC Express", trainNo: "#19210", pnr: "9012376544", departure: "13-Nov-2027, 03:55 PM", arrival: "13-Nov-2027, 06:33 PM", ticketUrl: "#" }, { from: "Jamnagar", to: "Surat", trainName: "BDTS Humsafar", trainNo: "#22924", pnr: "9012376545", departure: "13-Nov-2027, 08:15 PM", arrival: "14-Nov-2027, 05:25 AM", ticketUrl: "#" } ] },
+                "December 2027": { stay: { name: "Shree Dutt Dharmashala", checkIn: "13-Dec-2027, 10:00 AM", checkOut: "13-Dec-2027, 03:00 PM", ticketUrl: "#" }, expenses: { train: 1250, stay: 750, food: 550, total: 2550 }, journeys: [ { from: "Surat", to: "Dwarka", trainName: "Puri Okha SF Express", trainNo: "#20819", pnr: "1234587654", departure: "12-Dec-2027, 07:38 PM", arrival: "13-Dec-2027, 09:03 AM", ticketUrl: "#" }, { from: "Dwarka", to: "Jamnagar", trainName: "Okha BVC Express", trainNo: "#19210", pnr: "1234587655", departure: "13-Dec-2027, 03:55 PM", arrival: "13-Dec-2027, 06:33 PM", ticketUrl: "#" }, { from: "Jamnagar", to: "Surat", trainName: "BDTS Humsafar", trainNo: "#22924", pnr: "1234587656", departure: "13-Dec-2027, 08:15 PM", arrival: "14-Dec-2027, 05:25 AM", ticketUrl: "#" } ] }
+                 // --- COMMENT KHATAM ---
+                */
+            };
+            
+            const poonamDates = [
+                { year: 2025, month: 'August', day: 9 }, { year: 2025, month: 'September', day: 7 },
+                { year: 2025, month: 'October', day: 7 }, { year: 2025, month: 'November', day: 5 },
+                { year: 2025, month: 'December', day: 5 }, { year: 2026, month: 'January', day: 3 },
+                { year: 2026, month: 'February', day: 2 }, { year: 2026, month: 'March', day: 3 },
+                { year: 2026, month: 'April', day: 2 }, { year: 2026, month: 'May', day: 1 },
+                { year: 2026, month: 'May', day: 31 }, { year: 2026, month: 'June', day: 30 },
+                { year: 2026, month: 'July', day: 29 }, { year: 2026, month: 'August', day: 28 },
+                { year: 2026, month: 'September', day: 26 }, { year: 2026, month: 'October', day: 26 },
+                { year: 2026, month: 'November', day: 24 }, { year: 2026, month: 'December', day: 24 },
+                { year: 2027, month: 'January', day: 22 }, { year: 2027, month: 'February', day: 21 },
+                { year: 2027, month: 'March', day: 22 }, { year: 2027, month: 'April', day: 21 },
+                { year: 2027, month: 'May', day: 20 }, { year: 2027, month: 'June', day: 19 },
+                { year: 2027, month: 'July', day: 18 }, { year: 2027, month: 'August', day: 17 },
+                { year: 2027, month: 'September', day: 15 }, { year: 2027, month: 'October', day: 15 },
+                { year: 2027, month: 'November', day: 13 }, { year: 2027, month: 'December', day: 13 }
+            ];
 
-        function copyToClipboard(elementId, button) {
-            const textToCopy = document.getElementById(elementId).innerText;
-            const fallbackCopy = () => {
-                const textArea = document.createElement('textarea');
-                textArea.value = textToCopy;
-                textArea.style.position = 'fixed';
-                textArea.style.left = '-9999px';
-                document.body.appendChild(textArea);
-                textArea.focus();
-                textArea.select();
-                try {
-                    document.execCommand('copy');
-                    showNotification();
-                    updateButtonState(button);
-                } catch (err) {
-                    console.error('Fallback: Oops, unable to copy', err);
+            const mainView = document.getElementById('main-view');
+            const detailsView = document.getElementById('details-view');
+            const datesContainer = document.getElementById('poonam-dates-container');
+            const countdownContainer = document.getElementById('countdown-container');
+            
+            const groupedDates = poonamDates.reduce((acc, date) => {
+                const monthYear = `${date.month} ${date.year}`;
+                if (!acc[monthYear]) acc[monthYear] = [];
+                acc[monthYear].push(date);
+                return acc;
+            }, {});
+
+            const cardTextColors = [
+                'text-sky-300', 'text-fuchsia-400', 'text-emerald-300', 
+                'text-amber-300', 'text-red-400', 'text-violet-400', 'text-lime-300'
+            ];
+
+            function showMainView() {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                detailsView.style.opacity = 0;
+                setTimeout(() => {
+                    detailsView.classList.add('view-hidden');
+                    mainView.classList.remove('view-hidden');
+                    mainView.style.opacity = 1;
+                }, 300);
+            }
+
+            function showDetailsView(monthYear) {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                const data = journeyData[monthYear];
+                let detailsContent;
+
+                if (!data) {
+                    detailsContent = `
+                        <div class="text-center">
+                            <button id="back-button" class="mb-8 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-purple-600 hover:bg-purple-700">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 17l-5-5m0 0l5-5m-5 5h12"></path></svg>
+                                Back to Calendar
+                            </button>
+                            <div class="glass-effect rounded-xl p-8">
+                                <h2 class="text-3xl font-bold text-amber-300">Details Coming Soon!</h2>
+                                <p class="text-slate-300 mt-4">Information for ${monthYear} is not yet available. Please check back later.</p>
+                            </div>
+                        </div>`;
+                } else {
+                    const journeyCardsHtml = data.journeys.map((j, index) => `
+                        <div class="glass-effect rounded-xl p-4 sm:p-6">
+                            <div class="flex flex-col sm:flex-row justify-between sm:items-start mb-4 text-center sm:text-left">
+                                <div><h2 class="text-2xl sm:text-3xl font-semibold text-sky-300">${j.from.toUpperCase()} to ${j.to.toUpperCase()}</h2><p class="text-amber-300 font-semibold text-base">${j.trainName} (${j.trainNo})</p></div>
+                                <div class="sm:text-right mt-2 sm:mt-0 mx-auto sm:mx-0">
+                                    <p class="text-lg text-slate-400">PNR: <span class="font-semibold text-slate-200 text-xl">${j.pnr}</span></p>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-[1fr_auto_1fr] sm:gap-x-4 items-center mb-4">
+                                <div class="text-center sm:text-left"><p class="text-sm text-slate-400">Departure</p><p class="font-semibold text-base sm:text-lg text-slate-200">${j.from.toUpperCase()}</p><p class="mt-1 text-violet-400 text-sm sm:text-base">${j.departure}</p></div>
+                                <div class="w-full flex items-center my-4 sm:my-0"><div class="flex-grow h-px bg-slate-700"></div><div class="bg-sky-900/80 text-sky-300 p-3 rounded-full shadow-inner border border-sky-400/30 mx-4"><svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c-4 0-8 .5-8 4v10c0 .83.67 1.5 1.5 1.5S7 20.83 7 20v-2h10v2c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5V6c0-3.5-4-4-8-4zm0 2c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2zm-4 13.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm8 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM6 10h12v2H6v-2z"/></svg></div><div class="flex-grow h-px bg-slate-700"></div></div>
+                                <div class="text-center sm:text-right"><p class="text-sm text-slate-400">Arrival</p><p class="font-semibold text-base sm:text-lg text-slate-200">${j.to.toUpperCase()}</p><p class="mt-1 text-violet-400 text-sm sm:text-base">${j.arrival}</p></div>
+                            </div>
+                            <div class="text-center mt-4">
+                                <button class="view-ticket-btn animated-glow-border bg-sky-500/10 text-sky-300 border border-sky-400/30 px-6 py-2 rounded-lg hover:bg-sky-500/20 transition-all duration-300" data-ticket-url="${j.ticketUrl}">View Ticket</button>
+                            </div>
+                        </div>
+                    `).join('');
+
+                    const expenseCardHtml = `
+                        <div class="glass-effect rounded-xl p-4 sm:p-6">
+                            <h2 class="text-2xl sm:text-3xl font-semibold text-emerald-300 mb-4">Yatra ka Kharch (Expense Details)</h2>
+                            <div class="space-y-3 text-left">
+                                <div class="flex justify-between items-center"><p class="text-slate-400">Train:</p><p class="font-semibold text-slate-200">₹ ${data.expenses.train.toFixed(2)}</p></div>
+                                <div class="flex justify-between items-center"><p class="text-slate-400">Stay (Dharamshala):</p><p class="font-semibold text-slate-200">₹ ${data.expenses.stay.toFixed(2)}</p></div>
+                                <div class="flex justify-between items-center"><p class="text-slate-400">Food (Approx.):</p><p class="font-semibold text-slate-200">₹ ${data.expenses.food.toFixed(2)}</p></div>
+                                <div class="border-t border-slate-700 my-2"></div>
+                                <div class="flex justify-between items-center text-lg"><p class="font-bold text-emerald-300">Total Kharch:</p><p class="font-bold text-emerald-300">₹ ${data.expenses.total.toFixed(2)}</p></div>
+                            </div>
+                            <div class="text-center mt-6">
+                                <button id="pay-now-btn" class="animated-glow-border w-full bg-green-500/80 hover:bg-green-500/90 text-white font-bold py-3 px-4 rounded-lg flex items-center justify-center space-x-3 transition-all duration-300 transform hover:scale-105">Pay Now</button>
+                            </div>
+                        </div>
+                    `;
+
+                    detailsContent = `
+                        <div class="text-center">
+                            <button id="back-button" class="mb-8 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-purple-500">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 17l-5-5m0 0l5-5m-5 5h12"></path></svg>
+                                Back to Calendar
+                            </button>
+                            <div class="flex justify-center items-center gap-4 mb-12">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 sm:h-10 sm:w-10 text-amber-300" viewBox="0 0 24 24" fill="currentColor"><path d="M2 20h20v2H2v-2zM12 2L4 6v2h16V6l-8-4zm0 3.5l5.42 2.5H6.58L12 5.5zM5 9v10h2v-5h2v5h2v-5h2v5h2v-5h2v5h2V9H5zm4 2h2v2H9v-2zm6 0h2v2h-2v-2z"/></svg>
+                                <h1 class="page-title text-4xl sm:text-5xl md:text-6xl font-bold text-center text-amber-300 tracking-wider" style="text-shadow: 0 0 15px rgba(251, 191, 36, 0.5);">|| JAY DWARKADHISH ||</h1>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 sm:h-10 sm:w-10 text-amber-300" viewBox="0 0 24 24" fill="currentColor"><path d="M2 20h20v2H2v-2zM12 2L4 6v2h16V6l-8-4zm0 3.5l5.42 2.5H6.58L12 5.5zM5 9v10h2v-5h2v5h2v-5h2v5h2v-5h2v5h2V9H5zm4 2h2v2H9v-2zm6 0h2v2h-2v-2z"/></svg>
+                            </div>
+                            <main class="space-y-8">
+                                <div class="glass-effect rounded-xl p-4 sm:p-6">
+                                    <div class="flex flex-col sm:flex-row justify-between sm:items-start mb-4 text-center sm:text-left">
+                                        <div><h2 class="text-2xl sm:text-3xl font-semibold text-purple-300">Stay Information</h2><p class="text-slate-400 text-sm sm:text-base">${data.stay.name}</p></div>
+                                        <div class="sm:text-right mt-2 sm:mt-0 mx-auto sm:mx-0"><div class="bg-purple-900/80 text-purple-300 p-3 rounded-full shadow-inner border border-purple-400/30"><svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3L2 12h3v8h5z"/></svg></div></div>
+                                    </div>
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-left mb-4">
+                                        <div><p class="text-sm text-slate-400">Check-in</p><p class="font-semibold text-base sm:text-lg text-violet-400">${data.stay.checkIn}</p></div>
+                                        <div class="mt-4 sm:mt-0 sm:text-right"><p class="text-sm text-slate-400">Check-out</p><p class="font-semibold text-base sm:text-lg text-violet-400">${data.stay.checkOut}</p></div>
+                                    </div>
+                                    <div class="text-center mt-4"><button class="view-ticket-btn animated-glow-border bg-purple-500/10 text-purple-300 border border-purple-400/30 px-6 py-2 rounded-lg hover:bg-purple-500/20" data-ticket-url="${data.stay.ticketUrl}">Show Booking Info</button></div>
+                                </div>
+                                ${journeyCardsHtml}
+                                ${expenseCardHtml}
+                            </main>
+                        </div>
+                    `;
                 }
-                document.body.removeChild(textArea);
+                
+                mainView.style.opacity = 0;
+                mainView.classList.add('view-hidden');
+                detailsView.innerHTML = detailsContent;
+                detailsView.classList.remove('view-hidden');
+                setTimeout(() => {
+                    detailsView.style.opacity = 1;
+                }, 10);
+                document.getElementById('back-button').addEventListener('click', showMainView);
+                attachModalListeners();
+            }
+
+            function generateDateCards() {
+                if (!datesContainer) return;
+                let colorIndex = 0;
+
+                for (const monthYear in groupedDates) {
+                    const monthBlock = document.createElement('div');
+                    monthBlock.className = "glass-effect rounded-2xl p-6 flex flex-col items-center";
+                    
+                    const cardColorClass = cardTextColors[colorIndex % cardTextColors.length];
+                    
+                    const header = document.createElement('h2');
+                    header.className = `text-xl font-bold ${cardColorClass} text-center mb-4`;
+                    header.textContent = monthYear;
+                    monthBlock.appendChild(header);
+
+                    const datesGrid = document.createElement('div');
+                    datesGrid.className = 'flex flex-wrap justify-center gap-3 min-h-[6rem] content-center';
+                    groupedDates[monthYear].forEach(dateInfo => {
+                        const dateCircle = document.createElement('div');
+                        dateCircle.className = `w-12 h-12 rounded-full bg-white/10 flex items-center justify-center font-bold text-lg ${cardColorClass} shadow-md`;
+                        dateCircle.textContent = String(dateInfo.day).padStart(2, '0');
+                        datesGrid.appendChild(dateCircle);
+                    });
+                    monthBlock.appendChild(datesGrid);
+
+                    const bookingButton = document.createElement('button');
+                    bookingButton.className = 'animated-glow-border relative block w-full mt-4 p-3 rounded-lg bg-gradient-to-r from-pink-500 to-purple-600 text-center font-semibold text-white';
+                    bookingButton.textContent = 'SHOW BOOKINGS';
+                    bookingButton.dataset.monthyear = monthYear;
+
+                    bookingButton.addEventListener('click', function() {
+                        showDetailsView(this.dataset.monthyear);
+                    });
+                    
+                    monthBlock.appendChild(bookingButton);
+                    datesContainer.appendChild(monthBlock);
+                    colorIndex++;
+                }
+            }
+            
+            // --- Countdown Timer Logic ---
+            function startCountdown() {
+                const now = new Date();
+                let nextPoonamDate = null;
+
+                for (const date of poonamDates) {
+                    const monthIndex = new Date(Date.parse(date.month +" 1, 2012")).getMonth();
+                    const poonamDateTime = new Date(date.year, monthIndex, date.day);
+                    if (poonamDateTime > now) {
+                        nextPoonamDate = poonamDateTime;
+                        break;
+                    }
+                }
+
+                if (!nextPoonamDate) {
+                    countdownContainer.innerHTML = `<h2 class="text-2xl text-center text-amber-300">All scheduled journeys for this period are complete.</h2>`;
+                    return;
+                }
+
+                const nextPoonamMonthYear = `${nextPoonamDate.toLocaleString('default', { month: 'long' })} ${nextPoonamDate.getFullYear()}`;
+                countdownContainer.innerHTML = `
+                    <div class="text-center">
+                        <h2 class="text-2xl sm:text-3xl font-semibold text-amber-300 page-title">Next Journey Countdown: ${nextPoonamMonthYear}</h2>
+                        <div id="countdown-timer" class="flex justify-center space-x-4 sm:space-x-8 mt-4 text-white">
+                            <div><span id="days" class="text-4xl sm:text-6xl">00</span><p class="text-sm text-slate-400">Days</p></div>
+                            <div><span id="hours" class="text-4xl sm:text-6xl">00</span><p class="text-sm text-slate-400">Hours</p></div>
+                            <div><span id="minutes" class="text-4xl sm:text-6xl">00</span><p class="text-sm text-slate-400">Minutes</p></div>
+                            <div><span id="seconds" class="text-4xl sm:text-6xl">00</span><p class="text-sm text-slate-400">Seconds</p></div>
+                        </div>
+                    </div>
+                `;
+
+                const daysEl = document.getElementById('days');
+                const hoursEl = document.getElementById('hours');
+                const minutesEl = document.getElementById('minutes');
+                const secondsEl = document.getElementById('seconds');
+
+                const timerInterval = setInterval(() => {
+                    const now = new Date().getTime();
+                    const distance = nextPoonamDate - now;
+
+                    if (distance < 0) {
+                        clearInterval(timerInterval);
+                        startCountdown(); 
+                        return;
+                    }
+
+                    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                    daysEl.textContent = String(days).padStart(2, '0');
+                    hoursEl.textContent = String(hours).padStart(2, '0');
+                    minutesEl.textContent = String(minutes).padStart(2, '0');
+                    secondsEl.textContent = String(seconds).padStart(2, '0');
+
+                }, 1000);
+            }
+
+
+            const modal = document.getElementById('ticketModal');
+            const iframe = document.getElementById('ticketViewerIframe');
+            const closeModalBtn = document.getElementById('closeModalBtn');
+            const downloadBtn = document.getElementById('downloadBtn');
+            const aboutModal = document.getElementById('about-modal');
+            const contactModal = document.getElementById('contact-modal');
+            const paymentModal = document.getElementById('payment-modal');
+            const timingModal = document.getElementById('timing-modal');
+            const contactForm = document.getElementById('contact-form');
+            const formSuccessMessage = document.getElementById('form-success-message');
+
+            function attachModalListeners() {
+                document.querySelectorAll('.view-ticket-btn').forEach(button => {
+                    button.addEventListener('click', () => {
+                        const ticketUrl = button.dataset.ticketUrl;
+                        if (ticketUrl && ticketUrl !== '#') {
+                            iframe.src = ticketUrl;
+                            downloadBtn.href = ticketUrl;
+                            modal.classList.remove('hidden');
+                        }
+                    });
+                });
+                 document.getElementById('pay-now-btn').addEventListener('click', () => {
+                    paymentModal.classList.remove('hidden');
+                });
+            }
+
+            const closeModal = () => {
+                if(modal) modal.classList.add('hidden');
+                if(iframe) iframe.src = '';
             };
 
-            if (navigator.clipboard && window.isSecureContext) {
-                navigator.clipboard.writeText(textToCopy).then(() => {
-                    showNotification();
-                    updateButtonState(button);
-                }).catch(fallbackCopy);
-            } else {
-                fallbackCopy();
-            }
-        }
-        
-        function updateButtonState(button) {
-            const originalHTML = button.innerHTML; 
-            button.disabled = true;
-            button.classList.add('bg-green-500/50');
-            button.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>`;
+            if(closeModalBtn) closeModalBtn.addEventListener('click', closeModal);
+            if(modal) modal.addEventListener('click', (event) => {
+                if (event.target === modal) closeModal();
+            });
             
-            setTimeout(() => {
-                button.innerHTML = originalHTML;
-                button.disabled = false;
-                button.classList.remove('bg-green-500/50');
-            }, 2000);
-        }
-    </script>
+            // --- About, Contact, Timing Modal Logic ---
+            document.querySelectorAll('#about-link, #mobile-about-link').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    aboutModal.classList.remove('hidden');
+                });
+            });
+            document.querySelectorAll('#contact-link, #mobile-contact-link').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    contactModal.classList.remove('hidden');
+                });
+            });
+            document.querySelectorAll('#pay-link, #mobile-pay-link').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    paymentModal.classList.remove('hidden');
+                });
+            });
+             document.querySelectorAll('#timing-link, #mobile-timing-link').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    timingModal.classList.remove('hidden');
+                });
+            });
 
+            document.getElementById('close-about-modal').addEventListener('click', () => aboutModal.classList.add('hidden'));
+            document.getElementById('close-contact-modal').addEventListener('click', () => contactModal.classList.add('hidden'));
+            document.getElementById('close-payment-modal').addEventListener('click', () => paymentModal.classList.add('hidden'));
+            document.getElementById('close-timing-modal').addEventListener('click', () => timingModal.classList.add('hidden'));
+            aboutModal.addEventListener('click', (e) => { if(e.target === aboutModal) aboutModal.classList.add('hidden'); });
+            contactModal.addEventListener('click', (e) => { if(e.target === contactModal) contactModal.classList.add('hidden'); });
+            paymentModal.addEventListener('click', (e) => { if(e.target === paymentModal) paymentModal.classList.add('hidden'); });
+            timingModal.addEventListener('click', (e) => { if(e.target === timingModal) timingModal.classList.add('hidden'); });
+            
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const name = document.getElementById('contact-name').value;
+                const email = document.getElementById('contact-email').value;
+                const message = document.getElementById('contact-message').value;
+                const subject = `Suggestion from ${name}`;
+                const body = `Name: ${name}%0D%0AEmail: ${email}%0D%0A%0D%0AMessage:%0D%0A${message}`;
+                const mailtoLink = `mailto:hookstar1993@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+                window.location.href = mailtoLink;
+
+                formSuccessMessage.textContent = "Thank you! Your email client has been opened.";
+                setTimeout(() => {
+                    formSuccessMessage.textContent = "";
+                    contactModal.classList.add('hidden');
+                    contactForm.reset();
+                }, 3000);
+            });
+
+
+            // --- Password Logic ---
+            const passwordOverlay = document.getElementById('password-overlay');
+            const passwordForm = document.getElementById('password-form');
+            const passwordInput = document.getElementById('password-input');
+            const errorMessage = document.getElementById('error-message');
+            const siteWrapper = document.getElementById('site-wrapper');
+            const welcomePopup = document.getElementById('welcome-popup');
+
+            passwordForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                if (passwordInput.value.toLowerCase() === 'dwarkadhish') {
+                    passwordOverlay.style.opacity = '0';
+                    setTimeout(() => {
+                        passwordOverlay.classList.add('hidden');
+                        siteWrapper.style.opacity = '1';
+                        
+                        welcomePopup.classList.remove('pointer-events-none');
+                        welcomePopup.style.opacity = '1';
+                        welcomePopup.querySelector('div').style.transform = 'scale(1)';
+
+                        setTimeout(() => {
+                           welcomePopup.style.opacity = '0';
+                           welcomePopup.querySelector('div').style.transform = 'scale(0.95)';
+                           setTimeout(() => {
+                             welcomePopup.classList.add('pointer-events-none');
+                           }, 500);
+                        }, 2500);
+
+                    }, 500);
+                } else {
+                    errorMessage.textContent = 'Incorrect Password. Please try again.';
+                    passwordInput.classList.add('shake');
+                    setTimeout(() => {
+                        passwordInput.classList.remove('shake');
+                        errorMessage.textContent = '';
+                    }, 1500);
+                }
+            });
+
+            // --- Mandir Timing Logic ---
+            const timings = [
+                { time: "6:30 AM", event: "Mangla Aarti", type: "open", start: 6.5, end: 8.0 },
+                { time: "8:00 AM - 9:00 AM", event: "Mangla Darshan", type: "open", start: 8.0, end: 9.0 },
+                { time: "9:00 AM - 9:30 AM", event: "Abhishek Pooja (Darshan Closed)", type: "closed", start: 9.0, end: 9.5 },
+                { time: "9:30 AM - 10:15 AM", event: "Shringar Darshan", type: "open", start: 9.5, end: 10.25 },
+                { time: "10:15 AM - 10:30 AM", event: "Shringar Bhog (Darshan Closed)", type: "closed", start: 10.25, end: 10.5 },
+                { time: "10:30 AM - 10:45 AM", event: "Shringar Aarti", type: "open", start: 10.5, end: 10.75 },
+                { time: "11:05 AM - 11:20 AM", event: "Gwal Bhog (Darshan Closed)", type: "closed", start: 11.08, end: 11.33 },
+                { time: "11:20 AM - 12:00 PM", event: "Darshan Open", type: "open", start: 11.33, end: 12.0 },
+                { time: "12:00 PM - 12:20 PM", event: "Rajbhog (Darshan Closed)", type: "closed", start: 12.0, end: 12.33 },
+                { time: "12:20 PM - 1:00 PM", event: "Darshan Open", type: "open", start: 12.33, end: 13.0 },
+                { time: "1:00 PM - 5:00 PM", event: "Anosar (Mandir Closed)", type: "closed", start: 13.0, end: 17.0 },
+                { time: "5:00 PM - 5:30 PM", event: "Uthapan Darshan", type: "open", start: 17.0, end: 17.5 },
+                { time: "5:45 PM - 6:00 PM", event: "Uthapan Bhog (Darshan Closed)", type: "closed", start: 17.75, end: 18.0 },
+                { time: "6:15 PM - 6:45 PM", event: "Darshan Open", type: "open", start: 18.25, end: 18.75 },
+                { time: "7:00 PM - 7:25 PM", event: "Sandhya Bhog (Darshan Closed)", type: "closed", start: 19.0, end: 19.42 },
+                { time: "7:25 PM - 7:45 PM", event: "Sandhya Aarti", type: "open", start: 19.42, end: 19.75 },
+                { time: "8:00 PM - 8:10 PM", event: "Shayan Bhog (Darshan Closed)", type: "closed", start: 20.0, end: 20.17 },
+                { time: "8:10 PM - 8:35 PM", event: "Shayan Darshan", type: "open", start: 20.17, end: 20.58 },
+                { time: "8:35 PM", event: "Shayan Aarti", type: "open", start: 20.58, end: 21.0 },
+                { time: "9:00 PM", event: "Mandir Closed", type: "closed", start: 21.0, end: 24.0 }
+            ];
+
+            function populateTimings() {
+                const scheduleContainer = document.getElementById('timing-schedule');
+                const now = new Date();
+                const currentTime = now.getHours() + now.getMinutes() / 60;
+                let html = '';
+
+                timings.forEach(item => {
+                    const isCurrent = currentTime >= item.start && currentTime < item.end;
+                    const colorClass = item.type === 'open' ? 'text-green-400' : 'text-red-400';
+                    const currentClass = isCurrent ? 'current-timing' : '';
+                    
+                    html += `
+                        <div class="flex justify-between items-center p-3 rounded-lg ${currentClass} transition-all duration-300">
+                            <span class="font-semibold">${item.event}</span>
+                            <span class="${colorClass} font-bold">${item.time}</span>
+                        </div>
+                    `;
+                });
+                scheduleContainer.innerHTML = html;
+            }
+
+
+            generateDateCards();
+            startCountdown();
+            populateTimings();
+            document.getElementById('home-link').addEventListener('click', (e) => { e.preventDefault(); showMainView(); });
+            document.getElementById('mobile-home-link').addEventListener('click', (e) => { e.preventDefault(); showMainView(); });
+            document.getElementById('mobile-menu-button').addEventListener('click', () => {
+                document.getElementById('mobile-menu').classList.toggle('hidden');
+            });
+            
+            // --- Copy to Clipboard Logic ---
+            function showNotification() {
+                const notification = document.getElementById('notification');
+                notification.classList.remove('translate-y-24', 'opacity-0');
+                notification.classList.add('translate-y-0', 'opacity-100');
+                setTimeout(() => {
+                    notification.classList.add('translate-y-24', 'opacity-0');
+                    notification.classList.remove('translate-y-0', 'opacity-100');
+                }, 2000);
+            }
+
+            function updateButtonState(button) {
+                const originalHTML = button.innerHTML; 
+                button.disabled = true;
+                button.classList.add('bg-green-500/50');
+                button.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>`;
+                
+                setTimeout(() => {
+                    button.innerHTML = originalHTML;
+                    button.disabled = false;
+                    button.classList.remove('bg-green-500/50');
+                }, 2000);
+            }
+
+            window.copyToClipboard = function(elementId, button) {
+                const textToCopy = document.getElementById(elementId).innerText;
+                const fallbackCopy = () => {
+                    const textArea = document.createElement('textarea');
+                    textArea.value = textToCopy;
+                    textArea.style.position = 'fixed';
+                    textArea.style.left = '-9999px';
+                    document.body.appendChild(textArea);
+                    textArea.focus();
+                    textArea.select();
+                    try {
+                        document.execCommand('copy');
+                        showNotification();
+                        updateButtonState(button);
+                    } catch (err) {
+                        console.error('Fallback: Oops, unable to copy', err);
+                    }
+                    document.body.removeChild(textArea);
+                };
+
+                if (navigator.clipboard && window.isSecureContext) {
+                    navigator.clipboard.writeText(textToCopy).then(() => {
+                        showNotification();
+                        updateButtonState(button);
+                    }).catch(fallbackCopy);
+                } else {
+                    fallbackCopy();
+                }
+            }
+
+        });
+    </script>
 </body>
 </html>
