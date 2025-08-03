@@ -8,7 +8,7 @@
     <!-- Tailwind CSS for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Google Fonts: Inter -->
+    <!-- Google Fonts: Inter (iOS-like font) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -90,30 +90,52 @@
     <!-- Main container -->
     <div class="min-h-screen flex items-center justify-center p-4">
         
-        <div class="w-full max-w-md glass-panel rounded-2xl p-8 space-y-8">
+        <div class="w-full max-w-md glass-panel rounded-2xl p-6 sm:p-8 space-y-8">
             
             <!-- Header section -->
             <div class="text-center">
-                <h1 class="text-3xl font-bold text-high-contrast tracking-tight">Make a Secure Payment</h1>
-                <p class="text-gray-300 mt-2 text-high-contrast">Choose your preferred payment method below.</p>
+                <h1 class="text-2xl sm:text-3xl font-bold text-high-contrast tracking-tight">Make a Secure Payment</h1>
+                <p class="text-gray-300 mt-2 text-high-contrast text-sm sm:text-base">Choose your preferred payment method below.</p>
             </div>
 
             <!-- Direct App Payments -->
             <div class="space-y-4">
                 <h2 class="text-lg font-semibold text-cyan-300 text-high-contrast">1. Pay Directly via App</h2>
                 <p class="text-center text-sm text-gray-300 text-high-contrast">Click an icon to pay. (Works on mobile only)</p>
-                <div class="grid grid-cols-2 gap-4">
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
                     <!-- Google Pay Button -->
                     <a href="upi://pay?pa=9824594156@upi&pn=Your%20Name&cu=INR" class="glass-panel hover:bg-white/10 p-4 rounded-lg flex flex-col items-center justify-center space-y-2 transition-all duration-300 transform hover:scale-105">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Google_Pay_Logo.svg/2560px-Google_Pay_Logo.svg.png" alt="Google Pay" class="h-8">
+                        <div class="h-8 flex items-center">
+                           <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Google_Pay_Logo.svg/2560px-Google_Pay_Logo.svg.png" alt="Google Pay" class="h-full w-auto object-contain">
+                        </div>
                         <span class="font-semibold text-gray-200 text-xs text-high-contrast">Google Pay</span>
                     </a>
                     <!-- PhonePe Button -->
                     <a href="phonepe://pay?pa=9824594156@upi&pn=Your%20Name&cu=INR" class="glass-panel hover:bg-white/10 p-4 rounded-lg flex flex-col items-center justify-center space-y-2 transition-all duration-300 transform hover:scale-105">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/7/71/PhonePe_Logo.svg" alt="PhonePe" class="h-8">
+                         <div class="h-8 flex items-center">
+                           <img src="https://upload.wikimedia.org/wikipedia/commons/7/71/PhonePe_Logo.svg" alt="PhonePe" class="h-full w-auto object-contain">
+                        </div>
                          <span class="font-semibold text-gray-200 text-xs text-high-contrast">PhonePe</span>
                     </a>
+                    <!-- BHIM UPI Button -->
+                    <a href="bhim://upi/pay?pa=9824594156@upi&pn=Your%20Name&cu=INR" class="glass-panel hover:bg-white/10 p-4 rounded-lg flex flex-col items-center justify-center space-y-2 transition-all duration-300 transform hover:scale-105">
+                         <div class="h-8 flex items-center">
+                          
+                        <img src="https://upload.wikimedia.org/wikipedia/en/6/65/BHIM_SVG_Logo.svg" alt="PhonePe" class="h-full w-auto object-contain">
+                         </div>
+                         <span class="font-semibold text-gray-200 text-xs text-high-contrast">BHIM</span>
+                    </a>
+                    <!-- PayPal Button -->
+                    <a href="https://paypal.me/djharshad1993" target="_blank" rel="noopener noreferrer" class="glass-panel hover:bg-white/10 p-4 rounded-lg flex flex-col items-center justify-center space-y-2 transition-all duration-300 transform hover:scale-105">
+                         <div class="h-8 flex items-center">
+                        
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b7/PayPal_Logo_Icon_2014.svg" alt="PhonePe" class="h-full w-auto object-contain">
+
+                        </div>
+                         <span class="font-semibold text-gray-200 text-xs text-high-contrast">PayPal</span>
+                    </a>
                 </div>
+                 <p class="text-center text-xs text-gray-400 text-high-contrast pt-2">(PayPal is for international payments)</p>
             </div>
 
             <!-- Divider -->
@@ -126,7 +148,7 @@
             <div class="space-y-4">
                 <h2 class="text-lg font-semibold text-cyan-300 text-high-contrast">2. Scan & Pay</h2>
                 <div class="bg-white/90 p-4 rounded-lg flex justify-center">
-                    <img src="https://hookstar1993.github.io/paymehook/qr-9824594156@okbizaxis.png" alt="QR Code for Payment" class="rounded-md">
+                    <img src="https://hookstar1993.github.io/paymehook/qr-9824594156@okbizaxis.png" alt="QR Code for Payment" class="rounded-md w-full max-w-[250px]">
                 </div>
             </div>
 
@@ -134,8 +156,8 @@
             <div class="space-y-4">
                 <h2 class="text-lg font-semibold text-cyan-300 text-high-contrast">3. Pay with UPI ID</h2>
                 <div class="glass-panel p-4 rounded-lg flex justify-between items-center">
-                    <span id="upiId" class="font-medium text-high-contrast">9824594156@upi</span>
-                    <button onclick="copyToClipboard('upiId', this)" title="Copy UPI ID" class="p-2 rounded-lg transition-all duration-200 bg-white/10 hover:bg-white/20">
+                    <span id="upiId" class="font-medium text-high-contrast text-sm sm:text-base break-all">9824594156@upi</span>
+                    <button onclick="copyToClipboard('upiId', this)" title="Copy UPI ID" class="p-2 rounded-lg transition-all duration-200 bg-white/10 hover:bg-white/20 flex-shrink-0 ml-3">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" viewBox="0 0 20 20" fill="currentColor"><path d="M7 9a2 2 0 012-2h6a2 2 0 012 2v6a2 2 0 01-2 2H9a2 2 0 01-2-2V9z" /><path d="M5 3a2 2 0 00-2 2v6a2 2 0 002 2V5h6a2 2 0 00-2-2H5z" /></svg>
                     </button>
                 </div>
@@ -144,12 +166,12 @@
             <!-- Payment Method 4: Bank Transfer -->
             <div class="space-y-4">
                 <h2 class="text-lg font-semibold text-cyan-300 text-high-contrast">4. Direct Bank Transfer</h2>
-                <div class="glass-panel p-4 rounded-lg space-y-4">
+                <div class="glass-panel p-4 rounded-lg space-y-4 text-sm sm:text-base">
                     <div class="flex justify-between items-center">
                         <span class="text-gray-200 text-high-contrast">Account Name:</span>
                         <div class="flex items-center space-x-3">
                             <span id="accName" class="font-medium text-high-contrast text-right">SAVANI HARDEEP M.</span>
-                            <button onclick="copyToClipboard('accName', this)" title="Copy Account Name" class="p-1.5 rounded-lg transition-all duration-200 bg-white/10 hover:bg-white/20">
+                            <button onclick="copyToClipboard('accName', this)" title="Copy Account Name" class="p-1.5 rounded-lg transition-all duration-200 bg-white/10 hover:bg-white/20 flex-shrink-0">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" viewBox="0 0 20 20" fill="currentColor"><path d="M7 9a2 2 0 012-2h6a2 2 0 012 2v6a2 2 0 01-2 2H9a2 2 0 01-2-2V9z" /><path d="M5 3a2 2 0 00-2 2v6a2 2 0 002 2V5h6a2 2 0 00-2-2H5z" /></svg>
                             </button>
                         </div>
@@ -158,7 +180,7 @@
                         <span class="text-gray-200 text-high-contrast">Bank Name:</span>
                         <div class="flex items-center space-x-3">
                             <span id="bankName" class="font-medium text-high-contrast">STATE BANK OF INDIA</span>
-                            <button onclick="copyToClipboard('bankName', this)" title="Copy Bank Name" class="p-1.5 rounded-lg transition-all duration-200 bg-white/10 hover:bg-white/20">
+                            <button onclick="copyToClipboard('bankName', this)" title="Copy Bank Name" class="p-1.5 rounded-lg transition-all duration-200 bg-white/10 hover:bg-white/20 flex-shrink-0">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" viewBox="0 0 20 20" fill="currentColor"><path d="M7 9a2 2 0 012-2h6a2 2 0 012 2v6a2 2 0 01-2 2H9a2 2 0 01-2-2V9z" /><path d="M5 3a2 2 0 00-2 2v6a2 2 0 002 2V5h6a2 2 0 00-2-2H5z" /></svg>
                             </button>
                         </div>
@@ -167,7 +189,7 @@
                         <span class="text-gray-200 text-high-contrast">Account No:</span>
                         <div class="flex items-center space-x-3">
                             <span id="accNum" class="font-medium text-high-contrast">40003791171</span>
-                            <button onclick="copyToClipboard('accNum', this)" title="Copy Account Number" class="p-1.5 rounded-lg transition-all duration-200 bg-white/10 hover:bg-white/20">
+                            <button onclick="copyToClipboard('accNum', this)" title="Copy Account Number" class="p-1.5 rounded-lg transition-all duration-200 bg-white/10 hover:bg-white/20 flex-shrink-0">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" viewBox="0 0 20 20" fill="currentColor"><path d="M7 9a2 2 0 012-2h6a2 2 0 012 2v6a2 2 0 01-2 2H9a2 2 0 01-2-2V9z" /><path d="M5 3a2 2 0 00-2 2v6a2 2 0 002 2V5h6a2 2 0 00-2-2H5z" /></svg>
                             </button>
                         </div>
@@ -176,7 +198,7 @@
                         <span class="text-gray-200 text-high-contrast">IFSC Code:</span>
                         <div class="flex items-center space-x-3">
                             <span id="ifscCode" class="font-medium text-high-contrast">SBIN0060236</span>
-                            <button onclick="copyToClipboard('ifscCode', this)" title="Copy IFSC Code" class="p-1.5 rounded-lg transition-all duration-200 bg-white/10 hover:bg-white/20">
+                            <button onclick="copyToClipboard('ifscCode', this)" title="Copy IFSC Code" class="p-1.5 rounded-lg transition-all duration-200 bg-white/10 hover:bg-white/20 flex-shrink-0">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" viewBox="0 0 20 20" fill="currentColor"><path d="M7 9a2 2 0 012-2h6a2 2 0 012 2v6a2 2 0 01-2 2H9a2 2 0 01-2-2V9z" /><path d="M5 3a2 2 0 00-2 2v6a2 2 0 002 2V5h6a2 2 0 00-2-2H5z" /></svg>
                             </button>
                         </div>
